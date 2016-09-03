@@ -4,7 +4,7 @@
 #ifndef UMOCKTYPES_BOOL_H
 #define UMOCKTYPES_BOOL_H
 
-#include "azure_c_shared_utility/macro_utils.h"
+#include "macro_utils.h"
 
 #ifdef __cplusplus
 extern "C" {

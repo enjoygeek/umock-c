@@ -17,9 +17,9 @@ if not ERRORLEVEL==0 exit /b ERRORLEVEL
 cmake ..
 if not ERRORLEVEL==0 exit /b ERRORLEVEL
 
-msbuild /m ctest.sln /p:Configuration=Release
+msbuild /m umock_c.sln /p:Configuration=Release
 if not ERRORLEVEL==0 exit /b ERRORLEVEL
-msbuild /m ctest.sln /p:Configuration=Debug
+msbuild /m umock_c.sln /p:Configuration=Debug
 if not ERRORLEVEL==0 exit /b ERRORLEVEL
 
 ctest -C "debug" -V

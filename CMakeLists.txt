@@ -4,6 +4,12 @@
 #this is CMakeLists for umock_c
 cmake_minimum_required(VERSION 2.8.11)
 
+option(skip_unittests "set skip_unittests to ON to skip unittests (default is OFF)[if possible, they are always build]" OFF)
+
+project(umock_c)
+
+add_subdirectory(deps)
+
 set(umock_c_c_files
 ./src/umock_c.c
 ./src/umock_c_negative_tests.c
