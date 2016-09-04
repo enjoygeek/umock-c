@@ -23,4 +23,4 @@ umock_c uses testrunnerswitcher to allow switching between ctest and CppUnitTest
 
 ## Documentation
 
-See the doc folder 
+Complete documentation is available [here](doc/umock_c.md).
