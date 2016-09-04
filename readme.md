@@ -40,9 +40,9 @@ umock_c has way more features than this simple example!
 
 ## Dependencies
 
-umock_c uses ctest as test runner (https://github.com/Azure/azure-ctest.git). ctest is a C test runner that can be run on many platforms as it does not make use of compiler/platform specific code and thus it is easily portable.
-umock_c uses cmake (https://cmake.org/) to generate build files.
-umock_c uses testrunnerswitcher to allow switching between ctest and CppUnitTest for Windows. 
+- umock_c uses ctest as test runner (https://github.com/Azure/azure-ctest.git). ctest is a C test runner that can be run on many platforms as it does not make use of compiler/platform specific code and thus it is easily portable.
+- umock_c uses cmake (https://cmake.org/) to generate build files.
+- umock_c uses testrunnerswitcher to allow switching between ctest and CppUnitTest for Windows. 
 
 ## Documentation
 
