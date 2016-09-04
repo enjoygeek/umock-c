@@ -8,6 +8,8 @@ option(skip_unittests "set skip_unittests to ON to skip unittests (default is OF
 
 project(umock_c)
 
+include (CTest)
+
 add_subdirectory(deps)
 
 set(umock_c_c_files

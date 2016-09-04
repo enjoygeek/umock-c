@@ -56,7 +56,7 @@ if errorlevel 1 goto :eof
 msbuild /m umock_c.sln /p:Configuration=Debug
 if errorlevel 1 goto :eof
 
-ctest -C "debug" -V
+ctest -C "Debug" -V
 if errorlevel 1 goto :eof
 
 cd %build-root%
