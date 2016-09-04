@@ -15,6 +15,29 @@ git clone --recursive https://github.com/Azure/umock-c.git
    cmake ..
 - Build the code for your platform (msbuild for Windows, make for Linux, etc.)
 
+##Example
+
+Ever wanted to write somthing like this in C as a test?
+
+```c
+TEST_FUNCTION(my_first_test)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(42))
+        .SetReturn(44)
+        .IgnoreAllArguments();
+
+    // act
+    int result = function_under_test();
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 44, result);
+    ASSERT_ARE_EQUAL(char_ptr, umock_c_get_expected_calls(), umock_c_get_actual_calls());
+}
+```
+
+umock_c has way more features than this simple example!
+
 ## Dependencies
 
 umock_c uses ctest as test runner (https://github.com/Azure/azure-ctest.git). ctest is a C test runner that can be run on many platforms as it does not make use of compiler/platform specific code and thus it is easily portable.
