@@ -43,7 +43,7 @@ void my_free(void* ptr)
 
 #include "umock_c.h"
 #include "umocktypes_charptr.h"
-#include "azure_c_shared_utility/macro_utils.h"
+#include "macro_utils.h"
 
 DEFINE_ENUM_STRINGS(UMOCK_C_ERROR_CODE, UMOCK_C_ERROR_CODE_VALUES)
 
