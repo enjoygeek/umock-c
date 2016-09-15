@@ -257,14 +257,53 @@ TEST_FUNCTION(umocktypes_are_equal_charptr_with_same_pointer_returns_1)
     ASSERT_ARE_EQUAL(int, 1, result);
 }
 
-/* Tests_SRS_UMOCKTYPES_CHARPTR_01_005: [ umocktypes_are_equal_charptr shall compare the 2 strings pointed to by left and right. ] */
-/* Tests_SRS_UMOCKTYPES_CHARPTR_01_007: [ If left and right are equal, umocktypes_are_equal_charptr shall return 1. ]*/
-TEST_FUNCTION(umocktypes_are_equal_charptr_with_same_NULL_pointer_returns_1)
+/* Tests_SRS_UMOCKTYPES_CHARPTR_20_001: [ If any of the arguments is NULL, umocktypes_are_equal_charptr shall return -1. ]*/
+TEST_FUNCTION(umocktypes_are_equal_charptrptr_both_NULL_pointer_returns_error)
 {
     // arrange
 
     // act
     int result = umocktypes_are_equal_charptr(NULL, NULL);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, -1, result);
+}
+
+/* Tests_SRS_UMOCKTYPES_CHARPTR_20_001: [ If any of the arguments is NULL, umocktypes_are_equal_charptr shall return -1. ]*/
+TEST_FUNCTION(umocktypes_are_equal_charptr_with_leftptrptr_NULL_returns_error)
+{
+    // arrange
+    const char* input = "test42";
+
+    // act
+    int result = umocktypes_are_equal_charptr(NULL, &input);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, -1, result);
+}
+
+/* Tests_SRS_UMOCKTYPES_CHARPTR_20_001: [ If any of the arguments is NULL, umocktypes_are_equal_charptr shall return -1. ]*/
+TEST_FUNCTION(umocktypes_are_equal_charptr_with_rightptrptr_NULL_returns_error)
+{
+    // arrange
+    const char* input = "test42";
+
+    // act
+    int result = umocktypes_are_equal_charptr(&input, NULL);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, -1, result);
+}
+
+/* Tests_SRS_UMOCKTYPES_CHARPTR_01_007: [ If left and right are equal, umocktypes_are_equal_charptr shall return 1. ]*/
+TEST_FUNCTION(umocktypes_are_equal_charptr_with_same_NULL_pointer_returns_1)
+{
+    // arrange
+    const char* input1 = NULL;
+    const char* input2 = NULL;
+
+    // act
+    int result = umocktypes_are_equal_charptr(&input1, &input2);
 
     // assert
     ASSERT_ARE_EQUAL(int, 1, result);
@@ -274,10 +313,11 @@ TEST_FUNCTION(umocktypes_are_equal_charptr_with_same_NULL_pointer_returns_1)
 TEST_FUNCTION(umocktypes_are_equal_charptr_with_left_NULL_returns_0)
 {
     // arrange
-    const char* input = "test42";
+    const char* input1 = NULL;
+    const char* input2 = "test42";
 
     // act
-    int result = umocktypes_are_equal_charptr(NULL, &input);
+    int result = umocktypes_are_equal_charptr(&input1, &input2);
 
     // assert
     ASSERT_ARE_EQUAL(int, 0, result);
@@ -287,10 +327,11 @@ TEST_FUNCTION(umocktypes_are_equal_charptr_with_left_NULL_returns_0)
 TEST_FUNCTION(umocktypes_are_equal_charptr_with_right_NULL_returns_0)
 {
     // arrange
-    const char* input = "test42";
+    const char* input1 = "test42";
+    const char* input2 = NULL;
 
     // act
-    int result = umocktypes_are_equal_charptr(&input, NULL);
+    int result = umocktypes_are_equal_charptr(&input1, &input2);
 
     // assert
     ASSERT_ARE_EQUAL(int, 0, result);
