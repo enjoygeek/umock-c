@@ -18,6 +18,7 @@ set(${theseTestsName}_c_files
 ../../src/umocktypes_charptr.c
 ../../src/umocktypes_c.c
 ../../src/umocktypename.c
+../../src/umock_log.c
 )
 
 set(${theseTestsName}_h_files

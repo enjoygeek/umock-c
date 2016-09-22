@@ -25,6 +25,7 @@ set(umock_c_c_files
 ./src/umocktypes_stdint.c
 ./src/umocktypes_charptr.c
 ./src/umockcallpairs.c
+./src/umock_log.c
 )
 
 set(umock_c_h_files
@@ -41,6 +42,7 @@ set(umock_c_h_files
 ./inc/umocktypes_stdint.h
 ./inc/umocktypes_charptr.h
 ./inc/umockcallpairs.h
+./inc/umock_log.h
 )
 
 IF(WIN32)

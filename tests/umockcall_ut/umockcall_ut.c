@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include "testrunnerswitcher.h"
 #include "umockcall.h"
+#include "umock_log.h"
+
+void UMOCK_LOG(const char* format, ...)
+{
+    (void)format;
+}
 
 typedef struct test_mock_call_data_copy_CALL_TAG
 {

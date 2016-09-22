@@ -8,6 +8,12 @@
 #include "umocktypes.h"
 #include "umocktypes_c.h"
 #include "umock_c.h"
+#include "umock_log.h"
+
+void UMOCK_LOG(const char* format, ...)
+{
+    (void)format;
+}
 
 static UMOCKCALL_HANDLE test_expected_call = (UMOCKCALL_HANDLE)0x4242;
 static UMOCKCALL_HANDLE test_actual_call = (UMOCKCALL_HANDLE)0x4243;

@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include "testrunnerswitcher.h"
 #include "umockalloc.h"
+#include "umock_log.h"
+
+void UMOCK_LOG(const char* format, ...)
+{
+    (void)format;
+}
 
 typedef struct test_malloc_CALL_TAG
 {

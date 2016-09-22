@@ -5,17 +5,15 @@
 #define UMOCK_LOG_H
 
 #ifdef __cplusplus
-#include <cstdio>
-#else
-#include <stdio.h>
+extern "C" {
 #endif
 
-#if defined _MSC_VER
-#define UMOCK_LOG(format, ...) \
-    (void)printf(format "\r\n", __VA_ARGS__);
-#else
-#define UMOCK_LOG(format, ...) \
-    (void)printf(format "\r\n", ##__VA_ARGS__);
+    void UMOCK_LOG(const char* format, ...);
+
+#ifdef __cplusplus
+}
 #endif
+
+
 
 #endif /* UMOCK_LOG_H */

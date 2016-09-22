@@ -7,6 +7,12 @@
 #include "testrunnerswitcher.h"
 #include "umocktypes.h"
 #include "umocktypes_bool.h"
+#include "umock_log.h"
+
+void UMOCK_LOG(const char* format, ...)
+{
+    (void)format;
+}
 
 typedef struct umocktypes_register_type_CALL_TAG
 {

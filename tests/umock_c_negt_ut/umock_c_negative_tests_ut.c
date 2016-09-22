@@ -9,6 +9,12 @@
 #include "umocktypes_c.h"
 #include "umock_c.h"
 #include "umock_c_negative_tests.h"
+#include "umock_log.h"
+
+void UMOCK_LOG(const char* format, ...)
+{
+    (void)format;
+}
 
 TEST_DEFINE_ENUM_TYPE(UMOCK_C_ERROR_CODE, UMOCK_C_ERROR_CODE_VALUES)
 
