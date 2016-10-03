@@ -3,5 +3,5 @@
 
 cmake_minimum_required(VERSION 2.8.11)
 
-add_subdirectory(azure-ctest)
+add_subdirectory(ctest)
 add_subdirectory(testrunner)
