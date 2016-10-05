@@ -962,7 +962,8 @@ typedef struct MOCK_CALL_METADATA_TAG
         IF(IS_NOT_VOID(return_type),unsigned int result_value_set = 0; \
             void* captured_return_value = NULL;,) \
         IF(IS_NOT_VOID(return_type),TRACK_CREATE_FUNC_TYPE track_create_destroy_pair_malloc_local = C2(track_create_destroy_pair_malloc_,name); \
-            PAIRED_HANDLES* used_paired_handles_local = C2(used_paired_handles_,name);,) \
+            PAIRED_HANDLES* used_paired_handles_local = C2(used_paired_handles_,name); \
+            const char* return_type_string = TOSTRING(return_type);,) \
         IF(IS_NOT_VOID(return_type),return_type result = C2(mock_call_default_result_,name);,) \
         C2(mock_call_,name)* matched_call_data; \
         C2(mock_call_,name)* mock_call_data = (C2(mock_call_,name)*)umockalloc_malloc(sizeof(C2(mock_call_,name))); \
@@ -1063,7 +1064,7 @@ typedef struct MOCK_CALL_METADATA_TAG
         } \
         IF(IS_NOT_VOID(return_type),if (track_create_destroy_pair_malloc_local != NULL) \
         { \
-            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, TOSTRING(result), sizeof(result)) != 0) \
+            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
             { \
                 UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
                 umock_c_indicate_error(UMOCK_C_ERROR); \
@@ -1091,7 +1092,7 @@ typedef struct MOCK_CALL_METADATA_TAG
         } \
         if (track_create_destroy_pair_malloc_local != NULL) \
         { \
-            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, TOSTRING(result), sizeof(result)) != 0) \
+            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
             { \
                 UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
                 umock_c_indicate_error(UMOCK_C_ERROR); \
