@@ -27,6 +27,7 @@ extern "C" {
         UMOCK_C_CAPTURE_RETURN_ALREADY_USED, \
         UMOCK_C_NULL_ARGUMENT, \
         UMOCK_C_INVALID_PAIRED_CALLS, \
+        UMOCK_C_REGISTER_TYPE_FAILED, \
         UMOCK_C_ERROR
 
 DEFINE_ENUM(UMOCK_C_ERROR_CODE, UMOCK_C_ERROR_CODE_VALUES)
@@ -90,18 +91,7 @@ typedef void(*ON_UMOCK_C_ERROR)(UMOCK_C_ERROR_CODE error_code);
         (void)value; \
     } \
 
-#define REGISTER_UMOCK_VALUE_TYPE(value_type, stringify_func, are_equal_func, copy_func, free_func) \
-{ \
-    char* stringify_func(const value_type* value); \
-    int are_equal_func(const value_type* left, const value_type* right); \
-    int copy_func(value_type* destination, const value_type* source); \
-    void free_func(value_type* value); \
-    umocktypes_register_type(TOSTRING(value_type), (UMOCKTYPE_STRINGIFY_FUNC)stringify_func, (UMOCKTYPE_ARE_EQUAL_FUNC)are_equal_func, (UMOCKTYPE_COPY_FUNC)copy_func, (UMOCKTYPE_FREE_FUNC)free_func); \
-}
-
-#define REGISTER_UMOCK_ALIAS_TYPE(value_type, is_value_type) \
-    umocktypes_register_alias_type(TOSTRING(value_type), TOSTRING(is_value_type));
-
+extern void umock_c_indicate_error(UMOCK_C_ERROR_CODE error_code);
 extern int umock_c_init(ON_UMOCK_C_ERROR on_umock_c_error);
 extern void umock_c_deinit(void);
 extern void umock_c_reset_all_calls(void);
@@ -109,6 +99,40 @@ extern const char* umock_c_get_actual_calls(void);
 extern const char* umock_c_get_expected_calls(void);
 extern UMOCKCALLRECORDER_HANDLE umock_c_get_call_recorder(void);
 extern int umock_c_set_call_recorder(UMOCKCALLRECORDER_HANDLE umockc_call_recorder);
+
+/* Codes_SRS_UMOCK_C_LIB_01_065: [REGISTER_UMOCK_VALUE_TYPE shall register the type identified by value_type to be usable by umock_c for argument and return types and instruct umock_c which functions to use for getting the stringify, are_equal, copy and free.]*/
+/* Codes_SRS_UMOCK_C_LIB_01_197: [ If REGISTER_UMOCK_VALUE_TYPE fails, the on_error callback shall be called with UMOCK_C_REGISTER_TYPE_FAILED. ]*/
+#define REGISTER_UMOCK_VALUE_TYPE_ALL(value_type, stringify_func, are_equal_func, copy_func, free_func) \
+{ \
+    char* stringify_func(const value_type* value); \
+    int are_equal_func(const value_type* left, const value_type* right); \
+    int copy_func(value_type* destination, const value_type* source); \
+    void free_func(value_type* value); \
+    if (umocktypes_register_type(TOSTRING(value_type), (UMOCKTYPE_STRINGIFY_FUNC)stringify_func, (UMOCKTYPE_ARE_EQUAL_FUNC)are_equal_func, (UMOCKTYPE_COPY_FUNC)copy_func, (UMOCKTYPE_FREE_FUNC)free_func) != 0) \
+    { \
+        umock_c_indicate_error(UMOCK_C_REGISTER_TYPE_FAILED); \
+    } \
+}
+
+/* Codes_SRS_UMOCK_C_LIB_01_066: [If only the value_type is specified in the macro invocation then the stringify, are_equal, copy and free function names shall be automatically derived from the type as: umockvalue_stringify_value_type, umockvalue_are_equal_value_type, umockvalue_copy_value_type, umockvalue_free_value_type.]*/
+#define REGISTER_UMOCK_VALUE_TYPE_ONLY_TYPE(value_type) \
+    REGISTER_UMOCK_VALUE_TYPE_ALL (value_type, C2(umock_stringify_,value_type), C2(umock_are_equal_,value_type), C2(umock_copy_,value_type), C2(umock_free_,value_type))
+
+#if _MSC_VER
+#define REGISTER_UMOCK_VALUE_TYPE(...) \
+    IF(DIV2(COUNT_ARG(__VA_ARGS__)), REGISTER_UMOCK_VALUE_TYPE_ALL, REGISTER_UMOCK_VALUE_TYPE_ONLY_TYPE) LPAREN __VA_ARGS__)
+#else
+#define REGISTER_UMOCK_VALUE_TYPE(...) \
+    IF(DIV2(COUNT_ARG(__VA_ARGS__)), REGISTER_UMOCK_VALUE_TYPE_ALL, REGISTER_UMOCK_VALUE_TYPE_ONLY_TYPE) (__VA_ARGS__)
+#endif
+
+/* Codes_SRS_UMOCK_C_LIB_01_149: [ REGISTER_UMOCK_ALIAS_TYPE registers a new alias type for another type. ]*/
+/* Codes_SRS_UMOCK_C_LIB_01_198: [ If REGISTER_UMOCK_ALIAS_TYPE fails, the on_error callback shall be called with UMOCK_C_REGISTER_TYPE_FAILED. ]*/
+#define REGISTER_UMOCK_ALIAS_TYPE(value_type, is_value_type) \
+    if (umocktypes_register_alias_type(TOSTRING(value_type), TOSTRING(is_value_type)) != 0) \
+    { \
+        umock_c_indicate_error(UMOCK_C_REGISTER_TYPE_FAILED); \
+    } \
 
 #include "umock_c_internal.h"
 #include "umock_c_prod.h"

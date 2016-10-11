@@ -112,6 +112,36 @@ void free_func_TEST_STRUCT_COPY_FAILS(TEST_STRUCT_COPY_FAILS* value)
     (void)value;
 }
 
+typedef void* SOME_OTHER_TYPE;
+
+char* umock_stringify_SOME_OTHER_TYPE(const SOME_OTHER_TYPE* value)
+{
+    char* result = (char*)malloc(1);
+    (void)value;
+    result[0] = '\0';
+    return result;
+}
+
+int umock_are_equal_SOME_OTHER_TYPE(const SOME_OTHER_TYPE* left, const SOME_OTHER_TYPE* right)
+{
+    (void)left, right;
+    return 1;
+}
+
+int umock_copy_SOME_OTHER_TYPE(SOME_OTHER_TYPE* destination, const SOME_OTHER_TYPE* source)
+{
+    (void)source, destination;
+    return 0;
+}
+
+void umock_free_SOME_OTHER_TYPE(SOME_OTHER_TYPE* value)
+{
+    (void)value;
+}
+
+MOCK_FUNCTION_WITH_CODE(, void, another_test_function, SOME_OTHER_TYPE, a);
+MOCK_FUNCTION_END()
+
 static TEST_MUTEX_HANDLE test_mutex;
 static TEST_MUTEX_HANDLE global_mutex;
 
@@ -190,9 +220,12 @@ TEST_SUITE_INITIALIZE(suite_init)
     /* Tests_SRS_UMOCK_C_LIB_01_070: [umockvalue_charptr_register_types shall return 0 on success and non-zero on failure.]*/
     result = umocktypes_charptr_register_types();
     ASSERT_ARE_EQUAL(int, 0, result);
+    /* Tests_SRS_UMOCK_C_LIB_01_065: [REGISTER_UMOCK_VALUE_TYPE shall register the type identified by value_type to be usable by umock_c for argument and return types and instruct umock_c which functions to use for getting the stringify, are_equal, copy and free.]*/
     REGISTER_UMOCK_VALUE_TYPE(int*, stringify_func_intptr, are_equal_func_intptr, copy_func_intptr, free_func_intptr);
     REGISTER_UMOCK_VALUE_TYPE(unsigned char*, stringify_func_unsignedcharptr, are_equal_func_unsignedcharptr, copy_func_unsignedcharptr, free_func_unsignedcharptr);
     REGISTER_UMOCK_VALUE_TYPE(TEST_STRUCT_COPY_FAILS, stringify_func_TEST_STRUCT_COPY_FAILS, are_equal_func_TEST_STRUCT_COPY_FAILS, copy_func_TEST_STRUCT_COPY_FAILS, free_func_TEST_STRUCT_COPY_FAILS);
+    /* Tests_SRS_UMOCK_C_LIB_01_066: [If only the value_type is specified in the macro invocation then the stringify, are_equal, copy and free function names shall be automatically derived from the type as: umockvalue_stringify_value_type, umockvalue_are_equal_value_type, umockvalue_copy_value_type, umockvalue_free_value_type.]*/
+    REGISTER_UMOCK_VALUE_TYPE(SOME_OTHER_TYPE);
     REGISTER_UMOCK_ALIAS_TYPE(SOME_HANDLE, void*);
 }
 
@@ -2318,6 +2351,19 @@ TEST_FUNCTION(paired_calls_are_checked_with_a_struct_as_instance_type)
 
     // assert
     // no explicit assert
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_066: [If only the value_type is specified in the macro invocation then the stringify, are_equal, copy and free function names shall be automatically derived from the type as: umockvalue_stringify_value_type, umockvalue_are_equal_value_type, umockvalue_copy_value_type, umockvalue_free_value_type.]*/
+TEST_FUNCTION(using_a_type_registered_with_a_register_call_only_with_the_first_arg_succeeds)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(another_test_function((void*)0x4242));
+
+    // act
+    another_test_function((void*)0x4242);
+
+    // assert
+    ASSERT_ARE_EQUAL(size_t, 0, test_on_umock_c_error_call_count);
 }
 
 END_TEST_SUITE(umock_c_integrationtests)

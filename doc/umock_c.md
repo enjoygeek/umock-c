@@ -587,6 +587,8 @@ Example:
 REGISTER_UMOCK_VALUE_TYPE(TEST_STRUCT);
 ```
 
+If REGISTER_UMOCK_VALUE_TYPE fails, the on_io_error callback shall be called with UMOCK_C_REGISTER_TYPE_FAILED.
+
 #### REGISTER_UMOCK_ALIAS_TYPE
 
 ```c
@@ -594,6 +596,8 @@ REGISTER_UMOCK_ALIAS_TYPE(value_type, is_value_type)
 ```
 
 REGISTER_UMOCK_ALIAS_TYPE registers a new alias type for another type. That means that the handlers used for is_value_type will also be used for the new alias value_type.
+
+If REGISTER_UMOCK_ALIAS_TYPE fails, the on_io_error callback shall be called with UMOCK_C_REGISTER_TYPE_FAILED.
 
 ### Extra optional C types
 
