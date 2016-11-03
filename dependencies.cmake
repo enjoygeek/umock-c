@@ -1,0 +1,6 @@
+if(${use_installed_dependencies})
+    find_package(ctest REQUIRED CONFIG)
+    find_package(testrunnerswitcher REQUIRED CONFIG)
+else()
+    add_subdirectory(deps)
+endif()

@@ -12,12 +12,34 @@ git clone --recursive https://github.com/Azure/umock-c.git
 ```
 - Create a cmake folder under the root of umock-c
 - Switch to the cmake folder and run
-   cmake ..
+   ```cmake ..```
 - Build the code for your platform (msbuild for Windows, make for Linux, etc.)
 
-##Example
+Alternatively you may choose to use installed (by CMake) versions of packages already on your machine:
+- Create a cmake folder under the root of umock-c
+- Switch to the cmake folder and run
+    ```cmake -Duse_installed=ON ../```
+- Build the code for your platform (msbuild for Windows, make for Linux, etc.)
 
-Ever wanted to write somthing like this in C as a test?
+### To install umock_c:
+
+```
+cmake -Duse_installed=ON ../
+```
+On Linux:
+```
+sudo make install
+```
+On Windows:
+```
+msbuild /m INSTALL.vcxproj
+```
+
+_This requires that ctest and testrunnerswitcher are both installed (through CMake) on your machine._
+
+## Example
+
+Ever wanted to write something like this in C as a test?
 
 ```c
 TEST_FUNCTION(my_first_test)
