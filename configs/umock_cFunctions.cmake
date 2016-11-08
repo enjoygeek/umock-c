@@ -1,3 +1,6 @@
+#Copyright (c) Microsoft. All rights reserved.
+#Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 function(umockc_windows_unittests_add_dll whatIsBuilding)
     link_directories(${whatIsBuilding}_dll $ENV{VCInstallDir}UnitTest/lib)
     
