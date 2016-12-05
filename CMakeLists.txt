@@ -1,10 +1,9 @@
 #Copyright (c) Microsoft. All rights reserved.
 #Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#this is CMakeLists for umock_c
 cmake_minimum_required(VERSION 2.8.11)
 
-option(skip_unittests "set skip_unittests to ON to skip unittests (default is OFF)[if possible, they are always build]" OFF)
+option(run_unittests "set run_unittests to ON to run unittests (default is OFF)" OFF)
 option(use_installed_dependencies "set use_installed_dependencies to ON to use installed packages instead of building dependencies from submodules" OFF)
 
 project(umock_c)
@@ -69,7 +68,7 @@ include_directories(${UMOCK_C_INC_FOLDER} ${SHARED_UTIL_INC_FOLDER})
 
 include("configs/umock_cFunctions.cmake")
 
-if (NOT ${skip_unittests})
+if (${run_unittests})
     add_subdirectory(tests)
 endif()
 

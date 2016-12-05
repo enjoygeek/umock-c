@@ -6,20 +6,32 @@ umock_c is a C mocking library.
 
 ## Setup
 
+### Build
+
 - Clone umock_c by:
+
 ```
 git clone --recursive https://github.com/Azure/umock-c.git
 ```
-- Create a cmake folder under the root of umock-c
-- Switch to the cmake folder and run
-   ```cmake ..```
-- Build the code for your platform (msbuild for Windows, make for Linux, etc.)
 
-Alternatively you may choose to use installed (by CMake) versions of packages already on your machine:
 - Create a cmake folder under the root of umock-c
+
 - Switch to the cmake folder and run
-    ```cmake -Duse_installed=ON ../```
-- Build the code for your platform (msbuild for Windows, make for Linux, etc.)
+```
+cmake ..
+```
+
+If you would like to use installed (by CMake) versions of packages already on your machine:
+
+```
+cmake -Duse_installed=ON ../
+```
+
+- Build the code for your platform (msbuild for Windows, make for Linux, etc.) by executing in the cmake folder: 
+
+```
+cmake --build .
+```
 
 ### To install umock_c:
 
@@ -36,6 +48,14 @@ msbuild /m INSTALL.vcxproj
 ```
 
 _This requires that ctest and testrunnerswitcher are both installed (through CMake) on your machine._
+
+### Building tests
+
+In order to build the tests use the *run_unittests* cmake option:
+
+```
+cmake .. -Drun_unittests:bool=ON
+```
 
 ## Example
 
