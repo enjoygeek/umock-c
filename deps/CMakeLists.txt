@@ -3,5 +3,7 @@
 
 cmake_minimum_required(VERSION 2.8.11)
 
-add_subdirectory(ctest)
-add_subdirectory(testrunner)
+if (${run_unittests})
+	add_subdirectory(ctest)
+	add_subdirectory(testrunner)
+endif()
