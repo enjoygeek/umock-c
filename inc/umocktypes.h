@@ -48,10 +48,10 @@ extern "C" {
         } \
         else \
         { \
-            if (*value < sizeof(C2(enum_name,_strings)) / sizeof(C2(enum_name,_strings)[0])) \
+            if ((int)*value < sizeof(C2(enum_name,_strings)) / sizeof(C2(enum_name,_strings)[0])) \
             { \
                 size_t length = strlen(C2(enum_name_, strings)[*value]); \
-                if (length < 0) \
+                if (length == 0) \
                 { \
                     result = NULL; \
                 } \

@@ -80,7 +80,7 @@ char* umocktypename_normalize(const char* type_name)
             {
                 pos = 0;
                 length = 0;
-                last_pos;
+                (void)last_pos;
 
                 while (type_name[pos] != '\0')
                 {
