@@ -11,6 +11,15 @@ project(umock_c)
 # Build with -fPIC always
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
+# Build with -Werror
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+elseif(UNIX) # LINUX OR APPLE
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+endif()
+
 include (CTest)
 
 # Add dependencies or submodules if use_installed_dependencies is OFF
