@@ -8,6 +8,8 @@ option(use_installed_dependencies "set use_installed_dependencies to ON to use i
 
 project(umock_c)
 
+set(UMOCK_C_VERSION 1.1.0)
+
 # Build with -fPIC always
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
@@ -102,6 +104,12 @@ if(${use_installed_dependencies})
 
     include(CMakePackageConfigHelpers)
 
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}ConfigVersion.cmake"
+        VERSION ${UMOCK_C_VERSION}
+        COMPATIBILITY SameMajorVersion
+    )
+
     configure_file("configs/${PROJECT_NAME}Config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake"
         COPYONLY
@@ -118,6 +126,7 @@ if(${use_installed_dependencies})
         FILES
             "configs/${PROJECT_NAME}Functions.cmake"
             "configs/${PROJECT_NAME}Config.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}ConfigVersion.cmake"
         DESTINATION
             ${package_location}
     )
