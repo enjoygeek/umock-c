@@ -1,12 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include <stdlib.h>
-#ifdef _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
 #include <ctype.h>
-#include <stdio.h>
+#include <stddef.h>
 #include <string.h>
 #include "umocktypes.h"
 #include "umocktypename.h"

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include <stdint.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <stdint.h>
 #include "testrunnerswitcher.h"
 
 static size_t my_malloc_count;
@@ -29,15 +30,9 @@ void my_free(void* ptr)
     free(ptr);
 }
 
-#ifdef _CRTDBG_MAP_ALLOC
-#define _malloc_dbg(size, ...) my_malloc(size)
-#define _realloc_dbg(ptr, size, ...) my_realloc(ptr, size)
-#define _free_dbg(ptr, ...) my_free(ptr)
-#else
 #define malloc my_malloc
 #define realloc my_realloc
 #define free my_free
-#endif
 
 #define ENABLE_MOCKS
 

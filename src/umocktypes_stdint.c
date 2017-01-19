@@ -1,20 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include <stdlib.h>
-#ifdef _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <inttypes.h>
 #include "macro_utils.h"
 #include "umocktypes.h"
 #include "umocktypes_stdint.h"
 #include "umockalloc.h"
 #include "umock_log.h"
-#include "inttypes.h"
 
 #define IMPLEMENT_STRINGIFY(type, function_postfix, printf_specifier) \
     char* C2(umocktypes_stringify_,function_postfix)(type* value) \

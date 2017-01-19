@@ -98,7 +98,8 @@ int test_mock_call_data_are_equal(void* left, void* right)
 
 int another_test_mock_call_data_are_equal(void* left, void* right)
 {
-    (void)left, right;
+    (void)left;
+    (void)right;
     return 1;
 }
 

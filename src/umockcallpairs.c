@@ -1,16 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include <stdlib.h>
-#ifdef _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
-
+#include <string.h>
+#include <stddef.h>
 #include "umockcallpairs.h"
-#include "stddef.h"
 #include "umockalloc.h"
 #include "umock_log.h"
-#include "string.h"
 #include "umocktypes.h"
 
 int umockcallpairs_track_create_paired_call(PAIRED_HANDLES* paired_handles, const void* handle, const char* handle_type, size_t handle_type_size)

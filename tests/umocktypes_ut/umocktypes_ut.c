@@ -2,10 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include <stdlib.h>
-#ifdef _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
-#include <stdint.h>
+#include <stddef.h>
+#include <string.h>
 #include "testrunnerswitcher.h"
 #include "umocktypes.h"
 #include "umock_log.h"
@@ -228,7 +226,8 @@ static char* test_stringify_func_testtype_2(const void* value)
 
 static int test_copy_func_testtype_2(void* destination, const void* source)
 {
-    (void)destination, source;
+    (void)destination;
+    (void)source;
     return 0;
 }
 
@@ -239,7 +238,8 @@ void test_free_func_testtype_2(void* value)
 
 int test_are_equal_func_testtype_2(const void* left, const void* right)
 {
-    (void)left, right;
+    (void)left;
+    (void)right;
     return 0;
 }
 

@@ -49,14 +49,17 @@ int umockcallrecorder_reset_all_calls(UMOCKCALLRECORDER_HANDLE umock_call_record
 
 int umockcallrecorder_add_expected_call(UMOCKCALLRECORDER_HANDLE umock_call_recorder, UMOCKCALL_HANDLE mock_call)
 {
-    (void)umock_call_recorder, mock_call;
+    (void)umock_call_recorder;
+    (void)mock_call;
     umock_c_add_expected_call_call_count++;
     return 0;
 }
 
 int umockcallrecorder_add_actual_call(UMOCKCALLRECORDER_HANDLE umock_call_recorder, UMOCKCALL_HANDLE mock_call, UMOCKCALL_HANDLE* matched_call)
 {
-    (void)umock_call_recorder, mock_call, matched_call;
+    (void)umock_call_recorder;
+    (void)mock_call;
+    (void)matched_call;
     umock_c_add_actual_call_call_count++;
     return 0;
 }
