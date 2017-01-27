@@ -64,7 +64,6 @@ typedef struct umockcall_destroy_CALL_TAG
 
 static umockcall_destroy_CALL* umockcall_destroy_calls;
 static size_t umockcall_destroy_call_count;
-static int umockcall_destroy_call_result;
 
 typedef struct umockcall_stringify_CALL_TAG
 {
@@ -296,7 +295,6 @@ void reset_malloc_calls(void)
 }
 
 static TEST_MUTEX_HANDLE test_mutex;
-static TEST_MUTEX_HANDLE global_mutex;
 
 BEGIN_TEST_SUITE(umockcallrecorder_unittests)
 

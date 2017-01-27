@@ -118,7 +118,6 @@ void umockalloc_free(void* ptr)
 }
 
 static TEST_MUTEX_HANDLE test_mutex;
-static TEST_MUTEX_HANDLE global_mutex;
 
 BEGIN_TEST_SUITE(umock_c_without_init_unittests)
 

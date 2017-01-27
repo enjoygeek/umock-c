@@ -347,7 +347,6 @@ void umockalloc_free(void* ptr)
 }
 
 static TEST_MUTEX_HANDLE test_mutex;
-static TEST_MUTEX_HANDLE g_dllByDll;
 
 BEGIN_TEST_SUITE(umock_c_unittests)
 

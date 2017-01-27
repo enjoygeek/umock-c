@@ -154,7 +154,6 @@ void reset_malloc_calls(void)
 }
 
 static TEST_MUTEX_HANDLE test_mutex;
-static TEST_MUTEX_HANDLE global_mutex;
 
 BEGIN_TEST_SUITE(umocktypes_charptr_unittests)
 

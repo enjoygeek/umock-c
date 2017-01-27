@@ -62,7 +62,6 @@ extern "C" {
 #endif
 
 static TEST_MUTEX_HANDLE test_mutex;
-static TEST_MUTEX_HANDLE global_mutex;
 
 BEGIN_TEST_SUITE(umocktypename_unittests)
 
