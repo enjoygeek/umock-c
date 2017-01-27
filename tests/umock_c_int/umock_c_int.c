@@ -139,6 +139,58 @@ void umock_free_SOME_OTHER_TYPE(SOME_OTHER_TYPE* value)
     (void)value;
 }
 
+typedef struct MY_STRUCT_TAG
+{
+    int x;
+} MY_STRUCT;
+
+char* umocktypes_stringify_MY_STRUCT_ptr(const MY_STRUCT** value)
+{
+    char* result = (char*)malloc(1);
+    (void)value;
+    result[0] = '\0';
+    return result;
+}
+
+int umocktypes_are_equal_MY_STRUCT_ptr(const MY_STRUCT** left, const MY_STRUCT** right)
+{
+    int result;
+
+    if ((*left)->x == (*right)->x)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+
+    return result;
+}
+
+int umocktypes_copy_MY_STRUCT_ptr(MY_STRUCT** destination, const MY_STRUCT** source)
+{
+    int result;
+
+    *destination = (MY_STRUCT*)malloc(sizeof(MY_STRUCT));
+    if (*destination == NULL)
+    {
+        result = __LINE__;
+    }
+    else
+    {
+        (*destination)->x = (*source)->x;
+        result = 0;
+    }
+
+    return result;
+}
+
+void umocktypes_free_MY_STRUCT_ptr(MY_STRUCT** value)
+{
+    free(*value);
+}
+
 MOCK_FUNCTION_WITH_CODE(, void, another_test_function, SOME_OTHER_TYPE, a);
 MOCK_FUNCTION_END()
 
@@ -2364,6 +2416,88 @@ TEST_FUNCTION(using_a_type_registered_with_a_register_call_only_with_the_first_a
 
     // assert
     ASSERT_ARE_EQUAL(size_t, 0, test_on_umock_c_error_call_count);
+}
+
+/* ValidateArgumentValue_{arg_name}_AsType */
+
+/* Tests_SRS_UMOCK_C_LIB_01_199: [ `ValidateArgumentValue_{arg_name}_AsType` shall ensure that validation of the argument `arg_name` is done as if the argument is of type `type_name`. ]*/
+TEST_FUNCTION(validate_argument_value_as_type_validates_the_value_pointed_by_arg_value_int)
+{
+    // arrange
+    MY_STRUCT expected_arg_value = { 42 };
+    MY_STRUCT actual_arg_value = { 42 };
+
+    REGISTER_TYPE(MY_STRUCT*, MY_STRUCT_ptr);
+
+    STRICT_EXPECTED_CALL(test_dependency_with_void_ptr(&expected_arg_value))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(MY_STRUCT*));
+
+    // act
+    (void)test_dependency_with_void_ptr(&actual_arg_value);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_200: [ If `type_name` is NULL, umock_c shall raise an error with the code UMOCK_C_NULL_ARGUMENT. ]*/
+TEST_FUNCTION(ValidateArgumentValue_argument_AsType_with_NULL_yields_an_error)
+{
+    // arrange
+    MY_STRUCT expected_arg_value = { 42 };
+
+    REGISTER_TYPE(MY_STRUCT*, MY_STRUCT_ptr);
+
+    // act
+    STRICT_EXPECTED_CALL(test_dependency_with_void_ptr(&expected_arg_value))
+        .ValidateArgumentValue_argument_AsType(NULL);
+
+    // assert
+    ASSERT_ARE_NOT_EQUAL(size_t, 0, test_on_umock_c_error_call_count);
+    //TFS661968 ASSERT_ARE_EQUAL(size_t, 1, test_on_umock_c_error_call_count);
+    //TFS661968 ASSERT_ARE_EQUAL(int, (int)UMOCK_C_NULL_ARGUMENT, test_on_umock_c_error_calls[0].error_code);
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_199: [ `ValidateArgumentValue_{arg_name}_AsType` shall ensure that validation of the argument `arg_name` is done as if the argument is of type `type_name`. ]*/
+TEST_FUNCTION(validate_argument_value_as_type_2_times_with_same_type_does_not_leak)
+{
+    // arrange
+    MY_STRUCT expected_arg_value = { 42 };
+    MY_STRUCT actual_arg_value = { 42 };
+
+    REGISTER_TYPE(MY_STRUCT*, MY_STRUCT_ptr);
+
+    STRICT_EXPECTED_CALL(test_dependency_with_void_ptr(&expected_arg_value))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(MY_STRUCT*))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(MY_STRUCT*));
+
+    // act
+    (void)test_dependency_with_void_ptr(&actual_arg_value);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_203: [ If `ValidateArgumentValue_{arg_name}_AsType` is used multiple times on the same argument, the last call shall apply. ]*/
+TEST_FUNCTION(validate_argument_value_as_type_2_times_makes_the_last_call_stick)
+{
+    // arrange
+    MY_STRUCT expected_arg_value = { 42 };
+    MY_STRUCT actual_arg_value = { 42 };
+
+    REGISTER_TYPE(MY_STRUCT*, MY_STRUCT_ptr);
+
+    STRICT_EXPECTED_CALL(test_dependency_with_void_ptr(&expected_arg_value))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(int*))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(MY_STRUCT*));
+
+    // act
+    (void)test_dependency_with_void_ptr(&actual_arg_value);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
 }
 
 END_TEST_SUITE(umock_c_integrationtests)

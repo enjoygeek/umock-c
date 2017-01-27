@@ -78,14 +78,16 @@ function(umockc_build_test_artifacts whatIsBuilding use_gballoc)
     #setting output type
     if(WIN32)
         if(
-            (("${whatIsBuilding}" MATCHES ".*ut.*") AND ${run_unittests})
+            (("${whatIsBuilding}" MATCHES ".*ut.*") AND ${run_unittests}) OR
+            (("${whatIsBuilding}" MATCHES ".*int.*") AND ${run_int_tests})
         )
             umockc_windows_unittests_add_exe(${whatIsBuilding} ${ARGN})
             umockc_windows_unittests_add_dll(${whatIsBuilding} ${ARGN})
         endif()
     else()
         if(
-            (("${whatIsBuilding}" MATCHES ".*ut.*") AND ${run_unittests})
+            (("${whatIsBuilding}" MATCHES ".*ut.*") AND ${run_unittests}) OR
+            (("${whatIsBuilding}" MATCHES ".*int.*") AND ${run_int_tests})
         )
             umockc_windows_unittests_add_exe(${whatIsBuilding} ${ARGN})
         endif()

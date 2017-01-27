@@ -134,6 +134,9 @@ extern int umock_c_set_call_recorder(UMOCKCALLRECORDER_HANDLE umockc_call_record
         umock_c_indicate_error(UMOCK_C_REGISTER_TYPE_FAILED); \
     } \
 
+#define UMOCK_TYPE(value_type) \
+    (const char*)(const void*)(const value_type*)(const void*)TOSTRING(value_type)
+
 #include "umock_c_internal.h"
 #include "umock_c_prod.h"
 

@@ -4,6 +4,7 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 option(run_unittests "set run_unittests to ON to run unittests (default is OFF)" OFF)
+option(run_int_tests "set run_int_tests to ON to run the integration tests (default is OFF)" OFF)
 option(use_installed_dependencies "set use_installed_dependencies to ON to use installed packages instead of building dependencies from submodules" OFF)
 
 project(umock_c)
@@ -79,7 +80,7 @@ include_directories(${UMOCK_C_INC_FOLDER} ${SHARED_UTIL_INC_FOLDER})
 
 include("configs/umock_cFunctions.cmake")
 
-if (${run_unittests})
+if (${run_unittests} OR ${run_int_tests})
     add_subdirectory(tests)
 endif()
 

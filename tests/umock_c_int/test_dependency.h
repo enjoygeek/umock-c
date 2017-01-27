@@ -50,6 +50,7 @@ extern "C" {
     MOCKABLE_FUNCTION(, int, test_dependency_returning_int);
     MOCKABLE_FUNCTION(, char*, test_mock_function_returning_string);
     MOCKABLE_FUNCTION(, char*, test_mock_function_returning_string_with_macro);
+    MOCKABLE_FUNCTION(, void, test_dependency_with_void_ptr, void*, argument);
 
     typedef enum TEST_ENUM_TAG
     {

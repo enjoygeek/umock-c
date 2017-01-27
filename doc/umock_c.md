@@ -63,6 +63,7 @@ TEST_FUNCTION(my_first_test)
         UMOCK_C_CAPTURE_RETURN_ALREADY_USED, \
         UMOCK_C_NULL_ARGUMENT, \
         UMOCK_C_INVALID_PAIRED_CALLS, \
+        UMOCK_C_COPY_ARGUMENT_ERROR, \
         UMOCK_C_ERROR
 
 DEFINE_ENUM(UMOCK_C_ERROR_CODE, UMOCK_C_ERROR_CODE_VALUES)
@@ -824,6 +825,38 @@ TEST_FUNCTION(validate_argument_sample)
 
     // act
     function_with_int_arg(42);
+
+    // assert
+    // ... calls should match ...
+}
+```
+
+### ValidateArgumentValue_{arg_name}_AsType(const char* type_name)
+
+`ValidateArgumentValue_{arg_name}_AsType` shall ensure that validation of the argument `arg_name` is done as if the argument is of type `type_name`.
+If `type_name` is NULL, umock_c shall raise an error with the code UMOCK_C_NULL_ARGUMENT.
+If storing the argument value as the new type fails, umock_c shall raise an error with the code UMOCK_C_COPY_ARGUMENT_ERROR.
+If `ValidateArgumentValue_{arg_name}_AsType` is used multiple times on the same argument, the last call shall apply.
+
+```c
+typedef struct MY_STRUCT_TAG
+{
+    int x;
+} MY_STRUCT;
+
+void function_with_void_ptr(void* argument);
+
+TEST_FUNCTION(validate_argument_as_type_sample)
+{
+    // arrange
+    int arg_value = 0;
+    MY_STRUCT x = { 42 };
+
+    STRICT_EXPECTED_CALL(function_with_void_ptr(&x))
+        .ValidateArgumentValue_argument_AsType(UMOCK_TYPE(MY_STRUCT));
+
+    // act
+    function_with_int_arg(&x);
 
     // assert
     // ... calls should match ...
