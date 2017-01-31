@@ -13,7 +13,7 @@ function(umockc_windows_unittests_add_dll whatIsBuilding)
     set_target_properties(${whatIsBuilding}_dll
                PROPERTIES
                FOLDER "tests/umockc_tests") 
-    
+
     target_include_directories(${whatIsBuilding}_dll PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
     target_compile_definitions(${whatIsBuilding}_dll PUBLIC -DCPP_UNITTEST)
     SET_SOURCE_FILES_PROPERTIES( ${${whatIsBuilding}_test_files} PROPERTIES LANGUAGE CXX )
@@ -28,6 +28,10 @@ function(umockc_windows_unittests_add_lib whatIsBuilding)
         ${${whatIsBuilding}_h_files} 
         ${${whatIsBuilding}_c_files}
     )
+
+    set_target_properties(${whatIsBuilding}_lib
+               PROPERTIES
+               FOLDER "tests/umockc_tests")
     
     target_include_directories(${whatIsBuilding}_lib PUBLIC ${sharedutil_include_directories})
     target_compile_definitions(${whatIsBuilding}_lib PUBLIC -DUSE_CTEST)
