@@ -4,6 +4,7 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 add_subdirectory(umockalloc_ut)
+add_subdirectory(umockstring_ut)
 add_subdirectory(umockcall_ut)
 add_subdirectory(umockcallpairs_ut)
 add_subdirectory(umockcallrecorder_ut)

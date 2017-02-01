@@ -21,6 +21,7 @@ extern "C" {
 #include "umock_log.h"
 #include "umockalloc.h"
 #include "umockcallpairs.h"
+#include "umockstring.h"
 
 extern void umock_c_indicate_error(UMOCK_C_ERROR_CODE error_code);
 extern UMOCKCALL_HANDLE umock_c_get_last_expected_call(void);
@@ -35,27 +36,6 @@ typedef struct ARG_BUFFER_TAG
 
 typedef int(*TRACK_CREATE_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void* handle, const char* handle_type, size_t handle_type_size);
 typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void* handle);
-
-static char* clone_string_internal(const char* source)
-{
-    char* result;
-
-    if (source == NULL)
-    {
-        result = NULL;
-    }
-    else
-    {
-        size_t string_length = strlen(source);
-        result = (char*)umockalloc_malloc(string_length + 1);
-        if (result != NULL)
-        {
-            (void)memcpy(result, source, string_length + 1);
-        }
-    }
-
-    return result;
-}
 
 #define ARG_IS_IGNORED -1
 #define ARG_IS_NOT_IGNORED 0
@@ -93,7 +73,7 @@ static char* clone_string_internal(const char* source)
     result->C2(validate_arg_value_pointer_, arg_name) = typed_mock_call_data->C2(validate_arg_value_pointer_, arg_name);
 
 #define COPY_OVERRIDE_ARGUMENT_TYPE(arg_type, arg_name) \
-    result->C2(override_argument_type_, arg_name) = clone_string_internal(typed_mock_call_data->C2(override_argument_type_, arg_name));
+    result->C2(override_argument_type_, arg_name) = umockstring_clone(typed_mock_call_data->C2(override_argument_type_, arg_name));
 
 #define COPY_ARG_VALUE(arg_type, arg_name) umocktypes_copy(GET_USED_ARGUMENT_TYPE(typed_mock_call_data, arg_name, arg_type), (void*)&result->arg_name, (void*)&typed_mock_call_data->arg_name);
 #define COPY_OUT_ARG_BUFFERS(count, arg_type, arg_name) \
@@ -672,7 +652,7 @@ static char* clone_string_internal(const char* source)
             } \
             else \
             { \
-                char* cloned_type_name = clone_string_internal(type_name); \
+                char* cloned_type_name = umockstring_clone(type_name); \
                 if (cloned_type_name == NULL) \
                 { \
                     umockalloc_free(cloned_type_name); \
@@ -682,7 +662,7 @@ static char* clone_string_internal(const char* source)
                 else \
                 { \
                     arg_type temp; \
-                    if (umocktypes_copy(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), &temp, &mock_call_data->arg_name) != 0) \
+                    if (umocktypes_copy(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&temp, (void*)&mock_call_data->arg_name) != 0) \
                     { \
                         umockalloc_free(cloned_type_name); \
                         UMOCK_LOG("Cannot copy argument in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
@@ -690,8 +670,8 @@ static char* clone_string_internal(const char* source)
                     } \
                     else \
                     { \
-                        umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), &mock_call_data->arg_name); \
-                        if (umocktypes_copy(type_name, &mock_call_data->arg_name, &temp) != 0) \
+                        umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&mock_call_data->arg_name); \
+                        if (umocktypes_copy(type_name, (void*)&mock_call_data->arg_name, (void*)&temp) != 0) \
                         { \
                             umockalloc_free(cloned_type_name); \
                             UMOCK_LOG("Cannot copy argument as new type in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
@@ -699,7 +679,7 @@ static char* clone_string_internal(const char* source)
                         } \
                         else \
                         { \
-                            umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), &temp); \
+                            umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&temp); \
                             umockalloc_free(mock_call_data->C2(override_argument_type_, arg_name)); \
                             mock_call_data->C2(override_argument_type_, arg_name) = cloned_type_name; \
                         } \
