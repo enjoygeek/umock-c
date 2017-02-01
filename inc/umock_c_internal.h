@@ -73,7 +73,7 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
     result->C2(validate_arg_value_pointer_, arg_name) = typed_mock_call_data->C2(validate_arg_value_pointer_, arg_name);
 
 #define COPY_OVERRIDE_ARGUMENT_TYPE(arg_type, arg_name) \
-    result->C2(override_argument_type_, arg_name) = umockstring_clone(typed_mock_call_data->C2(override_argument_type_, arg_name));
+    result->C2(override_argument_type_, arg_name) = (typed_mock_call_data->C2(override_argument_type_, arg_name) == NULL) ? NULL : umockstring_clone(typed_mock_call_data->C2(override_argument_type_, arg_name));
 
 #define COPY_ARG_VALUE(arg_type, arg_name) umocktypes_copy(GET_USED_ARGUMENT_TYPE(typed_mock_call_data, arg_name, arg_type), (void*)&result->arg_name, (void*)&typed_mock_call_data->arg_name);
 #define COPY_OUT_ARG_BUFFERS(count, arg_type, arg_name) \
