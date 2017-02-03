@@ -28,6 +28,8 @@ extern "C" {
         int x;
     } TEST_STRUCT_NOT_REGISTERED;
 
+    typedef unsigned char ARRAY_TYPE[16];
+
     /* Tests_SRS_UMOCK_C_LIB_01_001: [MOCKABLE_FUNCTION shall be used to wrap function definition allowing the user to declare a function that can be mocked.]*/
     /* Tests_SRS_UMOCK_C_LIB_01_004: [If ENABLE_MOCKS is defined, MOCKABLE_FUNCTION shall generate the declaration of the function and code for the mocked function, thus allowing setting up of expectations in test functions.] */
     MOCKABLE_FUNCTION(, int, test_dependency_no_args);
@@ -51,6 +53,8 @@ extern "C" {
     MOCKABLE_FUNCTION(, char*, test_mock_function_returning_string);
     MOCKABLE_FUNCTION(, char*, test_mock_function_returning_string_with_macro);
     MOCKABLE_FUNCTION(, void, test_dependency_with_void_ptr, void*, argument);
+    MOCKABLE_FUNCTION(, void, test_dependency_with_const_void_ptr, const void*, argument);
+    MOCKABLE_FUNCTION(, void, test_dependency_with_array_arg, ARRAY_TYPE, argument);
 
     typedef enum TEST_ENUM_TAG
     {

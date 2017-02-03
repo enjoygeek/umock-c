@@ -12,6 +12,7 @@ umock_c_int.c
 set(${theseTestsName}_c_files
 ../../src/umock_c.c
 ../../src/umockalloc.c
+../../src/umockstring.c
 ../../src/umockcall.c
 ../../src/umockcallrecorder.c
 ../../src/umocktypes.c

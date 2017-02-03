@@ -97,13 +97,15 @@ char* stringify_func_TEST_STRUCT_COPY_FAILS(const TEST_STRUCT_COPY_FAILS* value)
 
 int are_equal_func_TEST_STRUCT_COPY_FAILS(const TEST_STRUCT_COPY_FAILS* left, const TEST_STRUCT_COPY_FAILS* right)
 {
-    (void)left, right;
+    (void)left;
+    (void)right;
     return 1;
 }
 
 int copy_func_TEST_STRUCT_COPY_FAILS(TEST_STRUCT_COPY_FAILS* destination, const TEST_STRUCT_COPY_FAILS* source)
 {
-    (void)source, destination;
+    (void)source;
+    (void)destination;
     return 0;
 }
 
@@ -124,13 +126,15 @@ char* umock_stringify_SOME_OTHER_TYPE(const SOME_OTHER_TYPE* value)
 
 int umock_are_equal_SOME_OTHER_TYPE(const SOME_OTHER_TYPE* left, const SOME_OTHER_TYPE* right)
 {
-    (void)left, right;
+    (void)left;
+    (void)right;
     return 1;
 }
 
 int umock_copy_SOME_OTHER_TYPE(SOME_OTHER_TYPE* destination, const SOME_OTHER_TYPE* source)
 {
-    (void)source, destination;
+    (void)source;
+    (void)destination;
     return 0;
 }
 
@@ -189,6 +193,41 @@ int umocktypes_copy_MY_STRUCT_ptr(MY_STRUCT** destination, const MY_STRUCT** sou
 void umocktypes_free_MY_STRUCT_ptr(MY_STRUCT** value)
 {
     free(*value);
+}
+
+char* umocktypes_stringify_ARRAY_TYPE(const ARRAY_TYPE* value)
+{
+    char* result = (char*)malloc(1);
+    (void)value;
+    result[0] = '\0';
+    return result;
+}
+
+int umocktypes_are_equal_ARRAY_TYPE(const ARRAY_TYPE* left, const ARRAY_TYPE* right)
+{
+    int result;
+
+    if (memcmp(*((ARRAY_TYPE**)left), *((ARRAY_TYPE**)right), 16) == 0)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+
+    return result;
+}
+
+int umocktypes_copy_ARRAY_TYPE(ARRAY_TYPE* destination, const ARRAY_TYPE* source)
+{
+    (void)memcpy(*destination, *source, 16);
+    return 0;
+}
+
+void umocktypes_free_ARRAY_TYPE(ARRAY_TYPE* value)
+{
+    (void)value;
 }
 
 MOCK_FUNCTION_WITH_CODE(, void, another_test_function, SOME_OTHER_TYPE, a);
@@ -353,6 +392,37 @@ TEST_FUNCTION(a_STRICT_EXPECTED_CALL_with_one_argument_without_an_actual_call_yi
 
     // assert
     ASSERT_ARE_EQUAL(char_ptr, "[test_dependency_1_arg(42)]", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_014: [For each argument the argument value shall be stored for later comparison with actual calls.] */
+TEST_FUNCTION(a_STRICT_EXPECTED_CALL_matched_with_an_actual_call_yields_no_differences_for_const_void_ptr)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_with_const_void_ptr((void*)0x4242));
+
+    // act
+    test_dependency_with_const_void_ptr((void*)0x4242);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_014: [For each argument the argument value shall be stored for later comparison with actual calls.] */
+TEST_FUNCTION(a_STRICT_EXPECTED_CALL_matched_with_an_actual_call_yields_no_differences_for_array_arg)
+{
+    // arrange
+    ARRAY_TYPE x = { 0 };
+
+    REGISTER_TYPE(ARRAY_TYPE, ARRAY_TYPE);
+    STRICT_EXPECTED_CALL(test_dependency_with_array_arg(x));
+
+    // act
+    test_dependency_with_array_arg(x);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
     ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
 }
 

@@ -661,28 +661,38 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
                 } \
                 else \
                 { \
-                    arg_type temp; \
-                    if (umocktypes_copy(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&temp, (void*)&mock_call_data->arg_name) != 0) \
+                    void* temp = umockalloc_malloc(sizeof(arg_type)); \
+                    if (temp == NULL) \
                     { \
                         umockalloc_free(cloned_type_name); \
-                        UMOCK_LOG("Cannot copy argument in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
+                        UMOCK_LOG("Cannot allocate memory for the temporary argument value in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
                         umock_c_indicate_error(UMOCK_C_ERROR); \
                     } \
                     else \
                     { \
-                        umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&mock_call_data->arg_name); \
-                        if (umocktypes_copy(type_name, (void*)&mock_call_data->arg_name, (void*)&temp) != 0) \
+                        if (umocktypes_copy(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)temp, (void*)&mock_call_data->arg_name) != 0) \
                         { \
                             umockalloc_free(cloned_type_name); \
-                            UMOCK_LOG("Cannot copy argument as new type in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
+                            UMOCK_LOG("Cannot copy argument in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
                             umock_c_indicate_error(UMOCK_C_ERROR); \
                         } \
                         else \
                         { \
-                            umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&temp); \
-                            umockalloc_free(mock_call_data->C2(override_argument_type_, arg_name)); \
-                            mock_call_data->C2(override_argument_type_, arg_name) = cloned_type_name; \
+                            umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)&mock_call_data->arg_name); \
+                            if (umocktypes_copy(type_name, (void*)&mock_call_data->arg_name, (void*)temp) != 0) \
+                            { \
+                                umockalloc_free(cloned_type_name); \
+                                UMOCK_LOG("Cannot copy argument as new type in ValidateArgumentValue_%s.", TOSTRING(arg_name)); \
+                                umock_c_indicate_error(UMOCK_C_ERROR); \
+                            } \
+                            else \
+                            { \
+                                umocktypes_free(GET_USED_ARGUMENT_TYPE(mock_call_data, arg_name, arg_type), (void*)temp); \
+                                umockalloc_free(mock_call_data->C2(override_argument_type_, arg_name)); \
+                                mock_call_data->C2(override_argument_type_, arg_name) = cloned_type_name; \
+                            } \
                         } \
+                        umockalloc_free(temp); \
                     } \
                 } \
             } \
