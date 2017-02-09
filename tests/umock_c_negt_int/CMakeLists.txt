@@ -13,6 +13,7 @@ set(${theseTestsName}_c_files
 ../../src/umock_c.c
 ../../src/umockalloc.c
 ../../src/umockcall.c
+../../src/umockcallpairs.c
 ../../src/umockcallrecorder.c
 ../../src/umocktypes.c
 ../../src/umocktypes_charptr.c

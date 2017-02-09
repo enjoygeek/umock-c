@@ -1058,8 +1058,10 @@ typedef struct MOCK_CALL_METADATA_TAG
 	{ \
         UMOCKCALL_HANDLE mock_call; \
         UMOCKCALL_HANDLE matched_call; \
-        IF(IS_NOT_VOID(return_type),unsigned int result_value_set = 0; \
-            void* captured_return_value = NULL;,) \
+        IF(IS_NOT_VOID(return_type), \
+        unsigned int result_value_set = 0; \
+        unsigned int fail_result_value_set = 0; \
+        void* captured_return_value = NULL;,) \
         IF(IS_NOT_VOID(return_type),TRACK_CREATE_FUNC_TYPE track_create_destroy_pair_malloc_local = C2(track_create_destroy_pair_malloc_,name); \
             PAIRED_HANDLES* used_paired_handles_local = C2(used_paired_handles_,name); \
             const char* return_type_string = TOSTRING(return_type);,) \
@@ -1107,6 +1109,7 @@ typedef struct MOCK_CALL_METADATA_TAG
                             result = C2(mock_call_fail_result_, name); \
                         } \
                         result_value_set = 1; \
+                        fail_result_value_set = 1; \
                     } \
                     else if (matched_call_data->return_value_set == RETURN_VALUE_SET) \
                     { \
@@ -1150,6 +1153,7 @@ typedef struct MOCK_CALL_METADATA_TAG
 /* Codes_SRS_UMOCK_C_LIB_01_188: [ The create call shall have a non-void return type. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_191: [ At each create_call a memory block shall be allocated so that it can be reported as a leak by any memory checker. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_192: [ If any error occurs during the create_call related then umock_c shall raise an error with the code UMOCK_C_ERROR. ]*/
+/* Codes_SRS_UMOCK_C_LIB_01_204: [ Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. ]*/
 #define MOCKABLE_FUNCTION_UMOCK_INTERNAL_WITH_MOCK(modifiers, return_type, name, ...) \
     MOCKABLE_FUNCTION_UMOCK_INTERNAL_WITH_MOCK_NO_CODE(return_type, name, __VA_ARGS__) \
     MOCKABLE_FUNCTION_BODY_WITHOUT_RETURN(modifiers, return_type, name, __VA_ARGS__) \
@@ -1162,7 +1166,7 @@ typedef struct MOCK_CALL_METADATA_TAG
         { \
             (void)memcpy(captured_return_value, &result, sizeof(result)); \
         } \
-        IF(IS_NOT_VOID(return_type),if (track_create_destroy_pair_malloc_local != NULL) \
+        IF(IS_NOT_VOID(return_type),if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
         { \
             if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
             { \
@@ -1181,6 +1185,7 @@ typedef struct MOCK_CALL_METADATA_TAG
 /* Codes_SRS_UMOCK_C_LIB_01_188: [ The create call shall have a non-void return type. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_191: [ At each create_call a memory block shall be allocated so that it can be reported as a leak by any memory checker. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_192: [ If any error occurs during the create_call related then umock_c shall raise an error with the code UMOCK_C_ERROR. ]*/
+/* Codes_SRS_UMOCK_C_LIB_01_204: [ Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. ]*/
 #define MOCK_FUNCTION_END(...) \
         IF(COUNT_ARG(__VA_ARGS__), if (result_value_set == 0) \
         { \
@@ -1190,7 +1195,7 @@ typedef struct MOCK_CALL_METADATA_TAG
         { \
             (void)memcpy(captured_return_value, &result, sizeof(result)); \
         } \
-        if (track_create_destroy_pair_malloc_local != NULL) \
+        if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
         { \
             if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
             { \

@@ -85,6 +85,14 @@ MOCK_FUNCTION_WITH_CODE(, void*, function_4_void_ptr_return_non_NULL, void*, a)
     void* my_result = (void*)0x42;
 MOCK_FUNCTION_END(my_result)
 
+typedef void* SOME_HANDLE;
+static const SOME_HANDLE test_handle = (SOME_HANDLE)0x4242;
+
+MOCK_FUNCTION_WITH_CODE(, SOME_HANDLE, some_create, int, a);
+MOCK_FUNCTION_END(test_handle)
+MOCK_FUNCTION_WITH_CODE(, void, some_destroy, SOME_HANDLE, h);
+MOCK_FUNCTION_END()
+
 int function_under_test_4_call_dep_void_ptr_return_non_NULL(void)
 {
     int result;
@@ -170,6 +178,9 @@ TEST_SUITE_INITIALIZE(suite_init)
 
     result = umock_c_init(test_on_umock_c_error);
     ASSERT_ARE_EQUAL(int, 0, result);
+
+    REGISTER_UMOCK_ALIAS_TYPE(SOME_HANDLE, void*);
+    REGISTER_UMOCK_ALIAS_TYPE(SOME_OTHER_HANDLE, void*);
 }
 
 TEST_SUITE_CLEANUP(suite_cleanup)
@@ -367,6 +378,46 @@ TEST_FUNCTION(negative_tests_with_9_calls_works)
         sprintf(temp_str, "On failed call %zu", i + 1);
         ASSERT_ARE_NOT_EQUAL_WITH_MSG(int, 0, result, temp_str);
     }
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_204: [ Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. ]*/
+TEST_FUNCTION(SetFailReturn_suppresses_paired_calls_tracking)
+{
+    REGISTER_UMOCKC_PAIRED_CREATE_DESTROY_CALLS(some_create, some_destroy);
+
+    STRICT_EXPECTED_CALL(some_create(42))
+        .SetFailReturn(NULL);
+
+    umock_c_negative_tests_snapshot();
+
+    umock_c_negative_tests_reset();
+    umock_c_negative_tests_fail_call(0);
+
+    // act
+    (void)some_create(42);
+
+    // assert
+    // no explicit assert, no leak expected
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_204: [ Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. ]*/
+TEST_FUNCTION(SetFailReturn_suppresses_paired_calls_tracking_for_mockable_functions)
+{
+    REGISTER_UMOCKC_PAIRED_CREATE_DESTROY_CALLS(some_other_create, some_other_destroy);
+
+    STRICT_EXPECTED_CALL(some_other_create(42))
+        .SetFailReturn(NULL);
+
+    umock_c_negative_tests_snapshot();
+
+    umock_c_negative_tests_reset();
+    umock_c_negative_tests_fail_call(0);
+
+    // act
+    (void)some_other_create(42);
+
+    // assert
+    // no explicit assert, no leak expected
 }
 
 END_TEST_SUITE(umock_c_negative_tests_integrationtests)

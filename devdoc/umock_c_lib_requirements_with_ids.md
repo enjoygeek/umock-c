@@ -1067,3 +1067,4 @@ XX**SRS_UMOCK_C_LIB_01_194: [** If the first argument passed to destroy_call is 
 X**SRS_UMOCK_C_LIB_01_195: [** If any error occurs during the destroy_call related then umock_c shall raise an error with the code UMOCK_C_ERROR. **]**
 
 **SRS_UMOCK_C_LIB_01_196: [** The type used for the return of create_call and first argument of destroy_call shall be allowed to be any type registered with umock. **]**
+XX**SRS_UMOCK_C_LIB_01_204: [** Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. **]**

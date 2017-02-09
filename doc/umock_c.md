@@ -1084,3 +1084,4 @@ If the first argument passed to destroy_call is not found in the list of tracked
 If any error occurs during the destroy_call related then umock_c shall raise an error with the code UMOCK_C_ERROR.
 
 The type used for the return of create_call and first argument of destroy_call shall be allowed to be any type registered with umock.
+Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier.
