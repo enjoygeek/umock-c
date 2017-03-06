@@ -45,6 +45,7 @@ set(umock_c_c_files
 ./src/umocktypes_charptr.c
 ./src/umockcallpairs.c
 ./src/umockstring.c
+./src/umockautoignoreargs.c
 ./src/umock_log.c
 )
 
@@ -63,6 +64,7 @@ set(umock_c_h_files
 ./inc/umocktypes_charptr.h
 ./inc/umockcallpairs.h
 ./inc/umockstring.h
+./inc/umockautoignoreargs.h
 ./inc/umock_log.h
 )
 

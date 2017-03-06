@@ -845,6 +845,26 @@ TEST_FUNCTION(validate_argument_as_type_sample)
 }
 ```
 
+### Automatic argument ignore
+
+**SRS_UMOCK_C_LIB_01_205: [** If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. **]**
+**SRS_UMOCK_C_LIB_01_206: [** `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. **]**
+**SRS_UMOCK_C_LIB_01_207: [** `IGNORED_NUM_ARG` shall be defined to 0 so that it can be used for numeric type arguments. **]**
+
+Example:
+
+```c
+    STRICT_EXPECTED_CALL(function_name(IGNORED_PTR_ARG, 2, IGNORED_NUM_ARG));
+```
+
+is equivalent to:
+
+```c
+    STRICT_EXPECTED_CALL(function_name(NULL, 2, 0))
+        .IgnoreArgument(1)
+        .IgnoreArgument(3);
+```
+
 ##Global mock modifiers
 
 ###REGISTER_GLOBAL_MOCK_HOOK

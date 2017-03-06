@@ -22,6 +22,7 @@ extern "C" {
 #include "umockalloc.h"
 #include "umockcallpairs.h"
 #include "umockstring.h"
+#include "umockautoignoreargs.h"
 
 extern void umock_c_indicate_error(UMOCK_C_ERROR_CODE error_code);
 extern UMOCKCALL_HANDLE umock_c_get_last_expected_call(void);
@@ -791,6 +792,25 @@ typedef struct MOCK_CALL_METADATA_TAG
     const MOCK_CALL_ARG_METADATA* args;
 } MOCK_CALL_METADATA;
 
+#define UNUSED_ARG(arg_type, arg_name) \
+    (void)arg_name;
+
+/* Codes_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Codes_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+/* Codes_SRS_UMOCK_C_LIB_01_207: [ `IGNORED_NUM_ARG` shall be defined to 0 so that it can be used for numeric type arguments. ]*/
+#define AUTO_IGNORE_ARG(arg_type, arg_name) \
+    if (umockautoignoreargs_is_call_argument_ignored(call_as_string, arg_index++, &is_ignored) != 0) \
+    { \
+        UMOCK_LOG("Failed parsing argument %s value from the call.", TOSTRING(arg_name)); \
+    } \
+    else \
+    { \
+        if (is_ignored) \
+        { \
+            result.C2(IgnoreArgument_, arg_name)(); \
+        } \
+    } \
+
 /* Codes_SRS_UMOCK_C_LIB_01_004: [If ENABLE_MOCKS is defined, MOCKABLE_FUNCTION shall generate the declaration of the function and code for the mocked function, thus allowing setting up of expectations in test functions.] */
 /* Codes_SRS_UMOCK_C_LIB_01_014: [For each argument the argument value shall be stored for later comparison with actual calls.] */
 /* Codes_SRS_UMOCK_C_LIB_01_017: [No arguments shall be saved by default, unless other modifiers state it.]*/
@@ -925,6 +945,22 @@ typedef struct MOCK_CALL_METADATA_TAG
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2(DECLARE_OVERRIDE_ARGUMENT_TYPE_FOR_ARG, __VA_ARGS__),) \
         IF(COUNT_ARG(__VA_ARGS__), , IF(IS_NOT_VOID(return_type),, int dummy : 1;)) \
     } C2(mock_call_,name); \
+    typedef C2(mock_call_modifier_,name) (*C3(auto_ignore_args_function_,name,_type))(C2(mock_call_modifier_,name) call_modifier, const char* call_as_string); \
+    C2(mock_call_modifier_,name) C2(auto_ignore_args_function_,name)(C2(mock_call_modifier_,name) call_modifier, const char* call_as_string) \
+    { \
+        C2(mock_call_modifier_,name) result = call_modifier; \
+        (void)call_as_string; \
+        IF(COUNT_ARG(__VA_ARGS__), \
+        int is_ignored; \
+        int arg_index = 1; ,) \
+        FOR_EACH_2(AUTO_IGNORE_ARG, __VA_ARGS__) \
+        return result; \
+    } \
+    C3(auto_ignore_args_function_,name,_type) C2(get_auto_ignore_args_function_,name)(IF(COUNT_ARG(__VA_ARGS__),,void) FOR_EACH_2_COUNTED(ARG_IN_SIGNATURE, __VA_ARGS__)) \
+    { \
+        FOR_EACH_2(UNUSED_ARG, __VA_ARGS__) \
+        return C2(auto_ignore_args_function_,name); \
+    } \
     UMOCK_STATIC char* C2(mock_call_data_stringify_,name)(void* mock_call_data) \
     { \
         char* result; \

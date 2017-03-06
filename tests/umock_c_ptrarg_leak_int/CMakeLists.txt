@@ -20,6 +20,7 @@ set(${theseTestsName}_c_files
 ../../src/umocktypename.c
 ../../src/umock_log.c
 ../../src/umockstring.c
+../../src/umockautoignoreargs.c
 )
 
 set(${theseTestsName}_h_files

@@ -12,6 +12,7 @@ umock_c_gen_func_decl_int.c
 set(${theseTestsName}_c_files
 ../../src/umock_c.c
 ../../src/umockalloc.c
+../../src/umockautoignoreargs.c
 ../../src/umockcall.c
 ../../src/umockcallrecorder.c
 ../../src/umocktypes.c

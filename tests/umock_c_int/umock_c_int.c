@@ -114,6 +114,33 @@ void free_func_TEST_STRUCT_COPY_FAILS(TEST_STRUCT_COPY_FAILS* value)
     (void)value;
 }
 
+char* umocktypes_stringify_TEST_STRUCT_WITH_2_MEMBERS(const TEST_STRUCT_WITH_2_MEMBERS* value)
+{
+    char* result = (char*)malloc(1);
+    (void)value;
+    result[0] = '\0';
+    return result;
+}
+
+int umocktypes_are_equal_TEST_STRUCT_WITH_2_MEMBERS(const TEST_STRUCT_WITH_2_MEMBERS* left, const TEST_STRUCT_WITH_2_MEMBERS* right)
+{
+    (void)left;
+    (void)right;
+    return 1;
+}
+
+int umocktypes_copy_TEST_STRUCT_WITH_2_MEMBERS(TEST_STRUCT_WITH_2_MEMBERS* destination, const TEST_STRUCT_WITH_2_MEMBERS* source)
+{
+    (void)source;
+    (void)destination;
+    return 0;
+}
+
+void umocktypes_free_TEST_STRUCT_WITH_2_MEMBERS(TEST_STRUCT_WITH_2_MEMBERS* value)
+{
+    (void)value;
+}
+
 typedef void* SOME_OTHER_TYPE;
 
 char* umock_stringify_SOME_OTHER_TYPE(const SOME_OTHER_TYPE* value)
@@ -2564,6 +2591,123 @@ TEST_FUNCTION(validate_argument_value_as_type_2_times_makes_the_last_call_stick)
 
     // act
     (void)test_dependency_with_void_ptr(&actual_arg_value);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_207: [ `IGNORED_NUM_ARG` shall be defined to 0 so that it can be used for numeric type arguments. ]*/
+TEST_FUNCTION(auto_ignore_ignores_a_numeric_argument)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_1_arg(42);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+TEST_FUNCTION(auto_ignore_ignores_a_pointer_argument)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_char_star_arg(IGNORED_PTR_ARG));
+
+    // act
+    (void)test_dependency_char_star_arg("cucu");
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_207: [ `IGNORED_NUM_ARG` shall be defined to 0 so that it can be used for numeric type arguments. ]*/
+TEST_FUNCTION(auto_ignore_ignores_a_2nd_numeric_argument)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_2_args(1, IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_2_args(1, 42);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+TEST_FUNCTION(auto_ignore_ignores_a_2nd_pointer_argument)
+{
+    // arrange
+    int a = 42;
+    int b = 43;
+    STRICT_EXPECTED_CALL(test_dependency_2_out_args(IGNORED_PTR_ARG, IGNORED_PTR_ARG));
+
+    // act
+    (void)test_dependency_2_out_args(&a, &b);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+#define test(a,b) 42
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+TEST_FUNCTION(auto_ignore_when_first_arg_is_a_macro_succeeds_for_2nd_arg)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_2_args(test(1,2), IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_2_args(42, 1);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+TEST_FUNCTION(auto_ignore_when_first_arg_is_a_nested_macro_succeeds_for_2nd_arg)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_2_args(test(test(1, 2), 4), IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_2_args(42, 1);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_205: [ If `IGNORED_PTR_ARG` or `IGNORED_NUM_ARG` is used as an argument value with `STRICT_EXPECTED_CALL`, the argument shall be automatically ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_206: [ `IGNORED_PTR_ARG` shall be defined as NULL so that it can be used for pointer type arguments. ]*/
+TEST_FUNCTION(auto_ignore_when_first_arg_is_a_struct_succeeds_for_2nd_arg)
+{
+#ifdef _MSC_VER
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_struct_with_2_members({ 2, 3 }, IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_struct_with_2_members({ 2, 3 }, 1);
+#else
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_struct_with_2_members((struct TEST_STRUCT_WITH_2_MEMBERS_TAG) { 2, 3 }, IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_struct_with_2_members((struct TEST_STRUCT_WITH_2_MEMBERS_TAG) { 2, 3 }, 1);
+#endif
 
     // assert
     ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());

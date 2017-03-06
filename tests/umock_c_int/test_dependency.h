@@ -18,6 +18,12 @@ extern "C" {
         int x;
     } TEST_STRUCT;
 
+    typedef struct TEST_STRUCT_WITH_2_MEMBERS_TAG
+    {
+        int x;
+        int y;
+    } TEST_STRUCT_WITH_2_MEMBERS;
+
     typedef struct TEST_STRUCT_COPY_FAILS_TAG
     {
         int x;
@@ -36,6 +42,7 @@ extern "C" {
     MOCKABLE_FUNCTION(, int, test_dependency_1_arg, int, a);
     MOCKABLE_FUNCTION(, int, test_dependency_2_args, int, a, int, b);
     MOCKABLE_FUNCTION(, int, test_dependency_struct_arg, TEST_STRUCT, s);
+    MOCKABLE_FUNCTION(, int, test_dependency_struct_with_2_members, TEST_STRUCT_WITH_2_MEMBERS, s, int, a);
     MOCKABLE_FUNCTION(, int, test_dependency_char_star_arg, char*, s);
     MOCKABLE_FUNCTION(, int, test_dependency_1_out_arg, int*, a);
     MOCKABLE_FUNCTION(, int, test_dependency_2_out_args, int*, a, int*, b);

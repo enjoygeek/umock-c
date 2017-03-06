@@ -52,7 +52,7 @@ typedef void(*ON_UMOCK_C_ERROR)(UMOCK_C_ERROR_CODE error_code);
 
 /* Codes_SRS_UMOCK_C_LIB_01_013: [STRICT_EXPECTED_CALL shall record that a certain call is expected.] */
 #define STRICT_EXPECTED_CALL(call) \
-	C2(umock_c_strict_expected_,call)
+	C2(get_auto_ignore_args_function_, call)(C2(umock_c_strict_expected_,call), #call)
 
 #define EXPECTED_CALL(call) \
 	C2(umock_c_expected_,call)
