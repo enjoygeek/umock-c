@@ -1,9 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#ifdef __cplusplus
+#include <cstdlib>
+#include <cstddef>
+#include <cstring>
+#else
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
+#endif
+
 #include "testrunnerswitcher.h"
 #include "umocktypes.h"
 #include "umock_log.h"
