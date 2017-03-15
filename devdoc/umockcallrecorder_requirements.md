@@ -75,6 +75,8 @@ extern int umockcallrecorder_add_actual_call(UMOCKCALLRECORDER_HANDLE umock_call
 **SRS_UMOCKCALLRECORDER_01_019: [** If any of the arguments is NULL, umockcallrecorder_add_actual_call shall fail and return a non-zero value. **]**
 **SRS_UMOCKCALLRECORDER_01_020: [** If allocating memory for the actual calls fails, umockcallrecorder_add_actual_call shall fail and return a non-zero value. **]**
 **SRS_UMOCKCALLRECORDER_01_021: [** If umockcall_are_equal fails, umockcallrecorder_add_actual_call shall fail and return a non-zero value. **]**
+**SRS_UMOCKCALLRECORDER_01_057: [** If any expected call has `ignore_all_calls` set and the actual call is equal to it when comparing the 2 calls, then the call shall be considered matched and not added to the actual calls list. **]**
+**SRS_UMOCKCALLRECORDER_01_058: [** If getting `ignore_all_calls` by calling `umockcall_get_ignore_all_calls` fails, `umockcallrecorder_add_actual_call` shall fail and return a non-zero value. **]**
 
 ##umockcallrecorder_get_actual_calls
 
@@ -99,6 +101,9 @@ extern const char* umockcallrecorder_get_expected_calls(UMOCKCALLRECORDER_HANDLE
 **SRS_UMOCKCALLRECORDER_01_029: [** If the umock_call_recorder is NULL, umockcallrecorder_get_expected_calls shall fail and return NULL. **]** 
 **SRS_UMOCKCALLRECORDER_01_030: [** If umockcall_stringify fails, umockcallrecorder_get_expected_calls shall fail and return NULL. **]**
 **SRS_UMOCKCALLRECORDER_01_031: [** If allocating memory for the resulting string fails, umockcallrecorder_get_expected_calls shall fail and return NULL. **]**
+**SRS_UMOCKCALLRECORDER_01_054: [** Calls that have the `ignore_all_calls` property set shall not be reported in the expected call list. **]**
+**SRS_UMOCKCALLRECORDER_01_055: [** Getting the `ignore_all_calls` property shall be done by calling `umockcall_get_ignore_all_calls`. **]**
+**SRS_UMOCKCALLRECORDER_01_056: [** If `umockcall_get_ignore_all_calls` returns a negative value then `umockcallrecorder_get_expected_calls` shall fail and return NULL. **]**
 
 ##umockcallrecorder_get_last_expected_call
 

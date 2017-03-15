@@ -749,9 +749,9 @@ X**SRS_UMOCK_C_LIB_01_129: [** ValidateArgumentBuffer shall only be available fo
 
 ###IgnoreAllCalls(void)
 
-**SRS_UMOCK_C_LIB_01_101: [**The IgnoreAllCalls call modifier shall record that all calls matching the expected call shall be ignored. If no matching call occurs no missing call shall be reported.**]**
-**SRS_UMOCK_C_LIB_01_102: [**If multiple matching actual calls occur no unexpected calls shall be reported.**]**
-**SRS_UMOCK_C_LIB_01_103: [**The call matching shall be done taking into account arguments and call modifiers referring to arguments.**]**
+XX**SRS_UMOCK_C_LIB_01_101: [**The IgnoreAllCalls call modifier shall record that all calls matching the expected call shall be ignored.**]** XX**SRS_UMOCK_C_LIB_01_208: [** If no matching call occurs no missing call shall be reported. **]**
+XX**SRS_UMOCK_C_LIB_01_102: [**If multiple matching actual calls occur no unexpected calls shall be reported.**]**
+XX**SRS_UMOCK_C_LIB_01_103: [**The call matching shall be done taking into account arguments and call modifiers referring to arguments.**]**
 
 ###CaptureReturn(return_type* captured_return_value)
 

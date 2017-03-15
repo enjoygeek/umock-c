@@ -572,10 +572,35 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
         return mock_call_modifier; \
     } \
 
+/* Codes_SRS_UMOCK_C_LIB_01_101: [The IgnoreAllCalls call modifier shall record that all calls matching the expected call shall be ignored. If no matching call occurs no missing call shall be reported.]*/
+/* Codes_SRS_UMOCK_C_LIB_01_208: [ If no matching call occurs no missing call shall be reported. ]*/
 #define IMPLEMENT_IGNORE_ALL_CALLS_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(ignore_all_calls_func_,name)(void) \
     { \
         DECLARE_MOCK_CALL_MODIFIER(name) \
+        UMOCKCALL_HANDLE last_expected_call = umock_c_get_last_expected_call(); \
+        if (last_expected_call == NULL) \
+        { \
+            UMOCK_LOG("Cannot get last expected call."); \
+            umock_c_indicate_error(UMOCK_C_ERROR); \
+        } \
+        else \
+        { \
+            C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(last_expected_call); \
+            if (mock_call_data == NULL) \
+            { \
+                UMOCK_LOG("ValidateArgumentBuffer called without having an expected call."); \
+                umock_c_indicate_error(UMOCK_C_ERROR); \
+            } \
+            else \
+            { \
+                if (umockcall_set_ignore_all_calls(last_expected_call, 1) != 0) \
+                { \
+                    UMOCK_LOG("Cannot set the ignore_all_calls value on the last expected call."); \
+                    umock_c_indicate_error(UMOCK_C_ERROR); \
+                } \
+            } \
+        } \
         return mock_call_modifier; \
     } \
 

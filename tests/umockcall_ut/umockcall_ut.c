@@ -736,7 +736,6 @@ TEST_FUNCTION(umockcall_clone_clones_the_call)
     umockcall_destroy(result);
 }
 
-#if 0
 /* Tests_SRS_UMOCKCALL_01_032: [ If umockcall is NULL, umockcall_clone shall return NULL. ]*/
 TEST_FUNCTION(umockcall_clone_with_NULL_handle_returns_NULL)
 {
@@ -896,7 +895,7 @@ TEST_FUNCTION(umockcall_set_fail_call_with_NULL_fails)
 }
 
 /* Tests_SRS_UMOCKCALL_01_040: [ If a value different than 0 and 1 is passed as fail_call, umockcall_set_fail_call shall return a non-zero value. ]*/
-TEST_FUNCTION(umockcall_set_fail_call_with_an_invalid_fail_Call_value_fails)
+TEST_FUNCTION(umockcall_set_fail_call_with_an_invalid_fail_call_value_fails)
 {
     // arrange
     UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
@@ -998,6 +997,141 @@ TEST_FUNCTION(umockcall_get_fail_call_on_a_cloned_call_retrieves_0)
     umockcall_destroy(call);
     umockcall_destroy(cloned_call);
 }
-#endif
+
+/* umockcall_set_ignore_all_calls */
+
+/* Tests_SRS_UMOCKCALL_01_045: [ umockcall_set_ignore_all_calls shall store the ignore_all_calls value, associating it with the umockcall call instance. ]*/
+/* Tests_SRS_UMOCKCALL_01_046: [ On success umockcall_set_ignore_all_calls shall return 0. ]*/
+TEST_FUNCTION(umockcall_set_ignore_all_calls_sets_the_ignore_all_calls_property)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+
+    // act
+    int result = umockcall_set_ignore_all_calls(call, 1);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 0, result);
+    ASSERT_ARE_EQUAL(int, 1, umockcall_get_ignore_all_calls(call));
+
+    // cleanup
+    umockcall_destroy(call);
+}
+
+/* Tests_SRS_UMOCKCALL_01_047: [ If umockcall is NULL, umockcall_set_ignore_all_calls shall return a non-zero value. ]*/
+TEST_FUNCTION(umockcall_set_ignore_all_calls_with_NULL_fails)
+{
+    // arrange
+
+    // act
+    int result = umockcall_set_ignore_all_calls(NULL, 1);
+
+    // assert
+    ASSERT_ARE_NOT_EQUAL(int, 0, result);
+}
+
+/* Tests_SRS_UMOCKCALL_01_048: [ If a value different than 0 and 1 is passed as ignore_all_calls, umockcall_set_ignore_all_calls shall return a non-zero value. ]*/
+TEST_FUNCTION(umockcall_set_ignore_all_calls_with_an_invalid_ignore_all_calls_value_fails)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+
+    // act
+    int result = umockcall_set_ignore_all_calls(call, 2);
+
+    // assert
+    ASSERT_ARE_NOT_EQUAL(int, 0, result);
+
+    // cleanup
+    umockcall_destroy(call);
+}
+
+/* umockcall_get_ignore_all_calls */
+
+/* Tests_SRS_UMOCKCALL_01_049: [ umockcall_get_ignore_all_calls shall retrieve the ignore_all_calls value, associated with the umockcall call instance. ]*/
+TEST_FUNCTION(umockcall_get_ignore_all_calls_retrieves_0)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+    (void)umockcall_set_ignore_all_calls(call, 0);
+
+    // act
+    int result = umockcall_get_ignore_all_calls(call);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 0, result);
+
+    // cleanup
+    umockcall_destroy(call);
+}
+
+/* Tests_SRS_UMOCKCALL_01_049: [ umockcall_get_ignore_all_calls shall retrieve the ignore_all_calls value, associated with the umockcall call instance. ]*/
+TEST_FUNCTION(umockcall_get_ignore_all_calls_retrieves_1)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+    (void)umockcall_set_ignore_all_calls(call, 1);
+
+    // act
+    int result = umockcall_get_ignore_all_calls(call);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 1, result);
+
+    // cleanup
+    umockcall_destroy(call);
+}
+
+/* Tests_SRS_UMOCKCALL_01_050: [ If umockcall is NULL, umockcall_get_ignore_all_calls shall return -1. ]*/
+TEST_FUNCTION(umockcall_get_ignore_all_calls_with_NULL_call_fails)
+{
+    // arrange
+
+    // act
+    int result = umockcall_get_ignore_all_calls(NULL);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, -1, result);
+}
+
+/* Tests_SRS_UMOCKCALL_01_041: [ umockcall_get_fail_call shall retrieve the fail_call value, associated with the umockcall call instance. ]*/
+TEST_FUNCTION(umockcall_get_ignore_all_calls_on_a_cloned_call_retrieves_1)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+    (void)umockcall_set_ignore_all_calls(call, 1);
+    test_mock_call_data_copy_expected_result = (void*)0x4243;
+    UMOCKCALL_HANDLE cloned_call = umockcall_clone(call);
+
+    // act
+    int result = umockcall_get_ignore_all_calls(cloned_call);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 1, result);
+
+    // cleanup
+    umockcall_destroy(call);
+    umockcall_destroy(cloned_call);
+}
+
+/* Tests_SRS_UMOCKCALL_01_049: [ umockcall_get_ignore_all_calls shall retrieve the ignore_all_calls value, associated with the umockcall call instance. ]*/
+TEST_FUNCTION(umockcall_get_ignore_all_calls_on_a_cloned_call_retrieves_0)
+{
+    // arrange
+    UMOCKCALL_HANDLE call = umockcall_create("test_function", (void*)0x4242, test_mock_call_data_copy, test_mock_call_data_free, test_mock_call_data_stringify, test_mock_call_data_are_equal);
+    (void)umockcall_set_fail_call(call, 0);
+    test_mock_call_data_copy_expected_result = (void*)0x4243;
+    UMOCKCALL_HANDLE cloned_call = umockcall_clone(call);
+
+    // act
+    int result = umockcall_get_fail_call(cloned_call);
+
+    // assert
+    ASSERT_ARE_EQUAL(int, 0, result);
+
+    // cleanup
+    umockcall_destroy(call);
+    umockcall_destroy(cloned_call);
+}
 
 END_TEST_SUITE(umockcall_unittests)

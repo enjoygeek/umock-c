@@ -25,6 +25,8 @@ extern "C" {
     extern UMOCKCALL_HANDLE umockcall_clone(UMOCKCALL_HANDLE umockcall);
     extern int umockcall_set_fail_call(UMOCKCALL_HANDLE umockcall, int fail_call);
     extern int umockcall_get_fail_call(UMOCKCALL_HANDLE umockcall);
+    extern int umockcall_set_ignore_all_calls(UMOCKCALL_HANDLE umockcall, int ignore_all_calls);
+    extern int umockcall_get_ignore_all_calls(UMOCKCALL_HANDLE umockcall);
 
 #ifdef __cplusplus
 }

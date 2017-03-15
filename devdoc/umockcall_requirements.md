@@ -21,6 +21,8 @@ umockcall is a module that encapsulates a umock call.
     extern UMOCKCALL_HANDLE umockcall_clone(UMOCKCALL_HANDLE umockcall);
     extern int umockcall_set_fail_call(UMOCKCALL_HANDLE umockcall, int fail_call);
     extern int umockcall_get_fail_call(UMOCKCALL_HANDLE umockcall);
+    extern int umockcall_set_ignore_all_calls(UMOCKCALL_HANDLE umockcall, int ignore_all_calls);
+    extern int umockcall_get_ignore_all_calls(UMOCKCALL_HANDLE umockcall);
 ```
 
 ##umockcall_create
@@ -113,4 +115,22 @@ extern int umockcall_get_fail_call(UMOCKCALL_HANDLE umockcall);
 
 **SRS_UMOCKCALL_01_041: [** umockcall_get_fail_call shall retrieve the fail_call value, associated with the umockcall call instance. **]**
 **SRS_UMOCKCALL_01_042: [** If umockcall is NULL, umockcall_get_fail_call shall return -1. **]**
+ 
+##umockcall_set_fail_call
+
+```c
+extern int umockcall_set_ignore_all_calls(UMOCKCALL_HANDLE umockcall, int ignore_all_calls);
+```
+
+**SRS_UMOCKCALL_01_045: [** umockcall_set_ignore_all_calls shall store the ignore_all_calls value, associating it with the umockcall call instance. **]**
+**SRS_UMOCKCALL_01_046: [** On success umockcall_set_ignore_all_calls shall return 0. **]**
+**SRS_UMOCKCALL_01_047: [** If umockcall is NULL, umockcall_set_ignore_all_calls shall return a non-zero value. **]**
+**SRS_UMOCKCALL_01_048: [** If a value different than 0 and 1 is passed as ignore_all_calls, umockcall_set_ignore_all_calls shall return a non-zero value. **]**
+
+```c
+extern int umockcall_get_ignore_all_calls(UMOCKCALL_HANDLE umockcall);
+```
+
+**SRS_UMOCKCALL_01_049: [** umockcall_get_ignore_all_calls shall retrieve the fail_call value, associated with the umockcall call instance. **]**
+**SRS_UMOCKCALL_01_050: [** If umockcall is NULL, umockcall_get_ignore_all_calls shall return -1. **]**
  

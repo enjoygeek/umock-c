@@ -2721,4 +2721,108 @@ TEST_FUNCTION(auto_ignore_when_first_arg_is_a_struct_succeeds_for_2nd_arg)
     ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
 }
 
+/* Tests_SRS_UMOCK_C_LIB_01_101: [The IgnoreAllCalls call modifier shall record that all calls matching the expected call shall be ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_208: [ If no matching call occurs no missing call shall be reported. ]*/
+TEST_FUNCTION(IgnoreAllCalls_does_not_record_an_expected_call)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_no_args())
+        .IgnoreAllCalls();
+
+    // act
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_101: [The IgnoreAllCalls call modifier shall record that all calls matching the expected call shall be ignored. ]*/
+/* Tests_SRS_UMOCK_C_LIB_01_208: [ If no matching call occurs no missing call shall be reported. ]*/
+TEST_FUNCTION(IgnoreAllCalls_ignores_the_call)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_no_args())
+        .IgnoreAllCalls();
+
+    // act
+    test_dependency_no_args();
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_102: [If multiple matching actual calls occur no unexpected calls shall be reported.]*/
+TEST_FUNCTION(IgnoreAllCalls_ignores_2_calls)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_no_args())
+        .IgnoreAllCalls();
+
+    test_dependency_no_args();
+
+    // act
+    test_dependency_no_args();
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_102: [If multiple matching actual calls occur no unexpected calls shall be reported.]*/
+/* Tests_SRS_UMOCK_C_LIB_01_103: [The call matching shall be done taking into account arguments and call modifiers referring to arguments.]*/
+TEST_FUNCTION(IgnoreAllCalls_ignores_2_calls_with_matching_1_arg)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(42))
+        .IgnoreAllCalls();
+
+    test_dependency_1_arg(42);
+
+    // act
+    test_dependency_1_arg(42);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_102: [If multiple matching actual calls occur no unexpected calls shall be reported.]*/
+/* Tests_SRS_UMOCK_C_LIB_01_103: [The call matching shall be done taking into account arguments and call modifiers referring to arguments.]*/
+TEST_FUNCTION(IgnoreAllCalls_ignores_only_calls_with_matching_args)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(42))
+        .IgnoreAllCalls();
+
+    test_dependency_1_arg(42);
+
+    // act
+    test_dependency_1_arg(43);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "[test_dependency_1_arg(43)]", umock_c_get_actual_calls());
+}
+
+/* Tests_SRS_UMOCK_C_LIB_01_102: [If multiple matching actual calls occur no unexpected calls shall be reported.]*/
+/* Tests_SRS_UMOCK_C_LIB_01_103: [The call matching shall be done taking into account arguments and call modifiers referring to arguments.]*/
+TEST_FUNCTION(IgnoreAllCalls_ignores_only_calls_with_matching_args_2)
+{
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(42))
+        .IgnoreAllCalls();
+    STRICT_EXPECTED_CALL(test_dependency_1_arg(43));
+
+    // act
+    test_dependency_1_arg(42);
+    test_dependency_1_arg(43);
+    test_dependency_1_arg(42);
+    test_dependency_1_arg(43);
+
+    // assert
+    ASSERT_ARE_EQUAL(char_ptr, "", umock_c_get_expected_calls());
+    ASSERT_ARE_EQUAL(char_ptr, "[test_dependency_1_arg(43)]", umock_c_get_actual_calls());
+}
+
 END_TEST_SUITE(umock_c_integrationtests)
