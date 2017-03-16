@@ -131,6 +131,6 @@ extern int umockcall_set_ignore_all_calls(UMOCKCALL_HANDLE umockcall, int ignore
 extern int umockcall_get_ignore_all_calls(UMOCKCALL_HANDLE umockcall);
 ```
 
-**SRS_UMOCKCALL_01_049: [** umockcall_get_ignore_all_calls shall retrieve the fail_call value, associated with the umockcall call instance. **]**
+**SRS_UMOCKCALL_01_049: [** umockcall_get_ignore_all_calls shall retrieve the ignore_all_calls value, associated with the umockcall call instance. **]**
 **SRS_UMOCKCALL_01_050: [** If umockcall is NULL, umockcall_get_ignore_all_calls shall return -1. **]**
  
