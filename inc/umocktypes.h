@@ -11,6 +11,8 @@ extern "C" {
 #include <stddef.h>
 #endif
 
+#include "umockalloc.h"
+
     typedef char*(*UMOCKTYPE_STRINGIFY_FUNC)(const void* value);
     typedef int(*UMOCKTYPE_COPY_FUNC)(void* destination, const void* source);
     typedef void(*UMOCKTYPE_FREE_FUNC)(void* value);
@@ -57,7 +59,7 @@ extern "C" {
                 } \
                 else \
                 { \
-                    result = (char*)malloc(length + 1); \
+                    result = (char*)umockalloc_malloc(length + 1); \
                     if (result != NULL) \
                     { \
                         (void)memcpy(result, C2(enum_name_, strings)[*value], length + 1); \
@@ -66,7 +68,7 @@ extern "C" {
             } \
             else \
             { \
-                result = (char*)malloc(64); \
+                result = (char*)umockalloc_malloc(64); \
                 if (result != NULL) \
                 { \
                     (void)sprintf(result, "%d", (int)*value); \
