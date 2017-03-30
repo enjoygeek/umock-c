@@ -1,6 +1,6 @@
 ﻿# umockautoignoreargs requirements
  
-#Overview
+# Overview
 
 `umockautoignoreargs` is a module that provides the functionality of inspecting the arguments of a function to determine whether they should be ignored or not.
 
@@ -33,4 +33,3 @@ XX**SRS_UMOCKAUTOIGNOREARGS_01_006: [** If the argument value is `IGNORED_PTR_AR
 XX**SRS_UMOCKAUTOIGNOREARGS_01_007: [** If the argument value is `IGNORED_NUM_ARG` then `is_argument_ignored` shall be set to 1. **]**
 
 XX**SRS_UMOCKAUTOIGNOREARGS_01_008: [** If the argument value is any other value then `is_argument_ignored` shall be set to 0. **]**
-
