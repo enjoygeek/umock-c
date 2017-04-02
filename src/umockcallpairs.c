@@ -122,7 +122,7 @@ int umockcallpairs_track_destroy_paired_call(PAIRED_HANDLES* paired_handles, con
         for (i = 0; i < paired_handles->paired_handle_count; i++)
         {
             /* Codes_SRS_UMOCKCALLPAIRS_01_013: [ When looking up which entry to remove, the comparison of the handle values shall be done by calling umocktypes_are_equal. ]*/
-            int are_equal_result = umocktypes_are_equal(paired_handles->paired_handles[paired_handles->paired_handle_count - 1].handle_type, paired_handles->paired_handles[paired_handles->paired_handle_count - 1].handle_value, handle);
+            int are_equal_result = umocktypes_are_equal(paired_handles->paired_handles[i].handle_type, paired_handles->paired_handles[i].handle_value, handle);
             if (are_equal_result < 0)
             {
                 /* Codes_SRS_UMOCKCALLPAIRS_01_014: [ If umocktypes_are_equal fails, umockcallpairs_track_destroy_paired_call shall fail and return a non-zero value. ]*/

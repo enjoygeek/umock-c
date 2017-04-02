@@ -499,6 +499,7 @@ TEST_FUNCTION(umockcallpairs_track_destroy_paired_call_with_2_creates_removes_th
     void* handle2 = (void*)0x4243;
     (void)umockcallpairs_track_create_paired_call(&paired_handles, &handle1, "void*", sizeof(handle1));
     (void)umockcallpairs_track_create_paired_call(&paired_handles, &handle2, "void*", sizeof(handle2));
+    void* first_copied_handle = umocktypes_copy_calls[0].destination;
     reset_all_calls();
 
     // act
@@ -508,6 +509,8 @@ TEST_FUNCTION(umockcallpairs_track_destroy_paired_call_with_2_creates_removes_th
     ASSERT_ARE_EQUAL(int, 0, result);
     ASSERT_ARE_EQUAL(size_t, 2, free_call_count);
     ASSERT_ARE_EQUAL(size_t, 1, umocktypes_are_equal_call_count);
+    ASSERT_ARE_EQUAL(char_ptr, "void*", umocktypes_are_equal_calls[0].type);
+    ASSERT_ARE_EQUAL(void_ptr, first_copied_handle, umocktypes_are_equal_calls[0].left);
     ASSERT_ARE_EQUAL(size_t, 1, umocktypes_free_call_count);
     ASSERT_ARE_EQUAL(char_ptr, "void*", umocktypes_free_calls[0].type);
 
