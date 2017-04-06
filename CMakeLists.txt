@@ -9,7 +9,7 @@ option(use_installed_dependencies "set use_installed_dependencies to ON to use i
 
 project(umock_c)
 
-set(UMOCK_C_VERSION 1.1.4)
+set(UMOCK_C_VERSION 1.1.5)
 
 #Use solution folders.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
