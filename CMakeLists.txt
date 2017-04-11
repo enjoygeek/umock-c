@@ -3,6 +3,10 @@
 
 cmake_minimum_required(VERSION 2.8.11)
 
+if(TARGET umock_c)
+    return()
+endif()
+
 option(run_unittests "set run_unittests to ON to run unittests (default is OFF)" OFF)
 option(run_int_tests "set run_int_tests to ON to run the integration tests (default is OFF)" OFF)
 option(use_installed_dependencies "set use_installed_dependencies to ON to use installed packages instead of building dependencies from submodules" OFF)
