@@ -10,6 +10,7 @@ endif()
 option(run_unittests "set run_unittests to ON to run unittests (default is OFF)" OFF)
 option(run_int_tests "set run_int_tests to ON to run the integration tests (default is OFF)" OFF)
 option(use_installed_dependencies "set use_installed_dependencies to ON to use installed packages instead of building dependencies from submodules" OFF)
+option(CppUnitTest_h_exists "when set to OFF it will not build test dll in Windows. (default is ON)" ON)
 
 project(umock_c)
 

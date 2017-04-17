@@ -2703,11 +2703,19 @@ TEST_FUNCTION(auto_ignore_when_first_arg_is_a_nested_macro_succeeds_for_2nd_arg)
 TEST_FUNCTION(auto_ignore_when_first_arg_is_a_struct_succeeds_for_2nd_arg)
 {
 #ifdef _MSC_VER
+#ifdef __cplusplus
     // arrange
     STRICT_EXPECTED_CALL(test_dependency_struct_with_2_members({ 2, 3 }, IGNORED_NUM_ARG));
 
     // act
     (void)test_dependency_struct_with_2_members({ 2, 3 }, 1);
+#else
+    // arrange
+    STRICT_EXPECTED_CALL(test_dependency_struct_with_2_members((TEST_STRUCT_WITH_2_MEMBERS) { 2, 3 }, IGNORED_NUM_ARG));
+
+    // act
+    (void)test_dependency_struct_with_2_members((TEST_STRUCT_WITH_2_MEMBERS) { 2, 3 }, 1);
+#endif
 #else
     // arrange
     STRICT_EXPECTED_CALL(test_dependency_struct_with_2_members((struct TEST_STRUCT_WITH_2_MEMBERS_TAG) { 2, 3 }, IGNORED_NUM_ARG));

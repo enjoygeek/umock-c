@@ -2,22 +2,24 @@
 #Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 function(umockc_windows_unittests_add_dll whatIsBuilding)
-    link_directories(${whatIsBuilding}_dll $ENV{VCInstallDir}UnitTest/lib)
+    if(CppUnitTest_h_exists)
+        link_directories(${whatIsBuilding}_dll $ENV{VCInstallDir}UnitTest/lib)
+        
+        add_library(${whatIsBuilding}_dll SHARED 
+            ${${whatIsBuilding}_test_files} 
+            ${${whatIsBuilding}_h_files} 
+            ${${whatIsBuilding}_c_files}
+        )
     
-    add_library(${whatIsBuilding}_dll SHARED 
-        ${${whatIsBuilding}_test_files} 
-        ${${whatIsBuilding}_h_files} 
-        ${${whatIsBuilding}_c_files}
-    )
-
-    set_target_properties(${whatIsBuilding}_dll
-               PROPERTIES
-               FOLDER "tests/umockc_tests") 
-
-    target_include_directories(${whatIsBuilding}_dll PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
-    target_compile_definitions(${whatIsBuilding}_dll PUBLIC -DCPP_UNITTEST)
-    SET_SOURCE_FILES_PROPERTIES( ${${whatIsBuilding}_test_files} PROPERTIES LANGUAGE CXX )
-    target_link_libraries(${whatIsBuilding}_dll ctest testrunnerswitcher ${ARGN})
+        set_target_properties(${whatIsBuilding}_dll
+                PROPERTIES
+                FOLDER "tests/umockc_tests") 
+    
+        target_include_directories(${whatIsBuilding}_dll PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
+        target_compile_definitions(${whatIsBuilding}_dll PUBLIC -DCPP_UNITTEST)
+        SET_SOURCE_FILES_PROPERTIES( ${${whatIsBuilding}_test_files} PROPERTIES LANGUAGE CXX )
+        target_link_libraries(${whatIsBuilding}_dll ctest testrunnerswitcher ${ARGN})
+    endif()
 endfunction()
 
 function(umockc_windows_unittests_add_lib whatIsBuilding)
@@ -63,7 +65,7 @@ function(umockc_build_test_artifacts whatIsBuilding use_gballoc)
     
     if(${use_gballoc})
         add_definitions(-DGB_MEASURE_MEMORY_FOR_THIS -DGB_DEBUG_ALLOC)
-    else()	
+    else()
     endif()
     
     #setting #defines
