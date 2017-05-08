@@ -284,8 +284,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_IGNORE_ARGUMENT_BY_NAME_FUNCTION(name, arg_type, arg_name) \
     static C2(mock_call_modifier_,name) C4(ignore_argument_func_,name,_,arg_name)(void) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("IgnoreArgument_%s called without having an expected call.", TOSTRING(arg_name)); \
@@ -302,8 +302,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_VALIDATE_ARGUMENT_BY_NAME_FUNCTION(name, arg_type, arg_name) \
     static C2(mock_call_modifier_,name) C4(validate_argument_func_,name,_,arg_name)(void) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("ValidateArgument_%s called without having an expected call.", TOSTRING(arg_name)); \
@@ -321,8 +321,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_IGNORE_ARGUMENT_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(ignore_argument_func_,name)(size_t arg_index) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("IgnoreArgument called without having an expected call."); \
@@ -350,8 +350,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_VALIDATE_ARGUMENT_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(validate_argument_func_,name)(size_t arg_index) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("ValidateArgument called without having an expected call."); \
@@ -378,8 +378,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_SET_RETURN_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(set_return_func_,name)(return_type return_value) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("SetReturn called without having an expected call."); \
@@ -401,8 +401,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_SET_FAIL_RETURN_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(set_fail_return_func_,name)(return_type return_value) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_, name)* mock_call_data = (C2(mock_call_, name)*)umockcall_get_call_data(umock_c_get_last_expected_call()); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (mock_call_data == NULL) \
         { \
             UMOCK_LOG("SetFailReturn called without having an expected call."); \
@@ -577,8 +577,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 #define IMPLEMENT_IGNORE_ALL_CALLS_FUNCTION(return_type, name, ...) \
     static C2(mock_call_modifier_,name) C2(ignore_all_calls_func_,name)(void) \
     { \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         UMOCKCALL_HANDLE last_expected_call = umock_c_get_last_expected_call(); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         if (last_expected_call == NULL) \
         { \
             UMOCK_LOG("Cannot get last expected call."); \
@@ -744,8 +744,8 @@ typedef int(*TRACK_DESTROY_FUNC_TYPE)(PAIRED_HANDLES* paired_handles, const void
 	C2(mock_call_modifier_,name) UMOCK_STATIC C2(function_prefix,name)(IF(COUNT_ARG(__VA_ARGS__),,void) FOR_EACH_2_COUNTED(ARG_IN_SIGNATURE, __VA_ARGS__)) \
 	{ \
         UMOCKCALL_HANDLE mock_call; \
-        DECLARE_MOCK_CALL_MODIFIER(name) \
         C2(mock_call_,name)* mock_call_data = (C2(mock_call_,name)*)umockalloc_malloc(sizeof(C2(mock_call_,name))); \
+        DECLARE_MOCK_CALL_MODIFIER(name) \
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2(COPY_ARG_TO_MOCK_STRUCT, __VA_ARGS__),) \
         IF(COUNT_ARG(__VA_ARGS__), IF(args_ignored, FOR_EACH_2(MARK_ARG_AS_IGNORED, __VA_ARGS__), FOR_EACH_2(MARK_ARG_AS_NOT_IGNORED, __VA_ARGS__)),) \
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2_COUNTED(CLEAR_OUT_ARG_BUFFERS, __VA_ARGS__),) \
@@ -980,10 +980,10 @@ typedef struct MOCK_CALL_METADATA_TAG
     C2(mock_call_modifier_,name) C2(auto_ignore_args_function_,name)(C2(mock_call_modifier_,name) call_modifier, const char* call_as_string) \
     { \
         C2(mock_call_modifier_,name) result = call_modifier; \
-        (void)call_as_string; \
         IF(COUNT_ARG(__VA_ARGS__), \
         int is_ignored; \
         int arg_index = 1; ,) \
+        (void)call_as_string; \
         FOR_EACH_2(AUTO_IGNORE_ARG, __VA_ARGS__) \
         return result; \
     } \
@@ -995,11 +995,12 @@ typedef struct MOCK_CALL_METADATA_TAG
     UMOCK_STATIC char* C2(mock_call_data_stringify_,name)(void* mock_call_data) \
     { \
         char* result; \
-        IF(COUNT_ARG(__VA_ARGS__), C2(mock_call_,name)* typed_mock_call_data = (C2(mock_call_,name)*)mock_call_data;,(void)mock_call_data;) \
+        IF(COUNT_ARG(__VA_ARGS__), C2(mock_call_,name)* typed_mock_call_data = (C2(mock_call_,name)*)mock_call_data;,) \
         int is_error = 0; \
         size_t args_string_length = 0; \
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2_COUNTED(STRINGIFY_ARGS_DECLARE_RESULT_VAR, __VA_ARGS__) \
         FOR_EACH_2(STRINGIFY_ARGS_CHECK_ARG_STRINGIFY_SUCCESS, __VA_ARGS__), ) \
+        (void)mock_call_data; \
         if (is_error != 0) \
         { \
             result = NULL; \
@@ -1043,9 +1044,11 @@ typedef struct MOCK_CALL_METADATA_TAG
         { \
             result = 1; \
             IF(COUNT_ARG(__VA_ARGS__), \
-            C2(mock_call_,name)* typed_left = (C2(mock_call_,name)*)left; \
-            C2(mock_call_,name)* typed_right = (C2(mock_call_,name)*)right; \
-            FOR_EACH_2_COUNTED(ARE_EQUAL_FOR_ARG, __VA_ARGS__), ) \
+			{ \
+				C2(mock_call_,name)* typed_left = (C2(mock_call_,name)*)left; \
+				C2(mock_call_,name)* typed_right = (C2(mock_call_,name)*)right; \
+				FOR_EACH_2_COUNTED(ARE_EQUAL_FOR_ARG, __VA_ARGS__) \
+			}, ) \
         } \
         return result; \
     } \
@@ -1068,10 +1071,10 @@ typedef struct MOCK_CALL_METADATA_TAG
     } \
     UMOCK_STATIC void* C2(mock_call_data_copy_func_,name)(void* mock_call_data) \
     { \
-        (void)mock_call_data; \
         C2(mock_call_,name)* result = (C2(mock_call_,name)*)umockalloc_malloc(sizeof(C2(mock_call_,name))); \
         IF(COUNT_ARG(__VA_ARGS__), C2(mock_call_,name)* typed_mock_call_data = (C2(mock_call_,name)*)mock_call_data;,) \
         IF(IS_NOT_VOID(return_type), C2(mock_call_,name)* typed_mock_call_data_result = (C2(mock_call_,name)*)mock_call_data;,) \
+        (void)mock_call_data; \
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2(COPY_IGNORE_ARG, __VA_ARGS__) \
         FOR_EACH_2(COPY_ARG_VALUE, __VA_ARGS__) \
         FOR_EACH_2_COUNTED(COPY_OUT_ARG_BUFFERS, __VA_ARGS__) \
