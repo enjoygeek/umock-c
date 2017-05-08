@@ -282,10 +282,12 @@ TEST_FUNCTION(umocktypename_normalize_succeeds_with_a_type_that_ends_in_star)
 TEST_FUNCTION(when_allocating_memory_Fails_umocktypename_normalize_fails)
 {
     // arrange
+	char* result;
+
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypename_normalize("char*");
+    result = umocktypename_normalize("char*");
 
     // assert
     ASSERT_IS_NULL(result);

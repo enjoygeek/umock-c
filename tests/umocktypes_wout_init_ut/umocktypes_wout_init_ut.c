@@ -365,10 +365,11 @@ TEST_FUNCTION(umocktypes_deinit_if_the_module_was_not_initialized_shall_do_nothi
 TEST_FUNCTION(umocktypes_register_type_when_the_module_is_not_initialized_fails)
 {
     // arrange
+	int result;
     umocktypename_normalize_call_result = "char*";
 
     // act
-    int result = umocktypes_register_type("char  *", test_stringify_func_testtype, test_are_equal_func_testtype, test_copy_func_testtype, test_free_func_testtype);
+    result = umocktypes_register_type("char  *", test_stringify_func_testtype, test_are_equal_func_testtype, test_copy_func_testtype, test_free_func_testtype);
 
     // assert
     ASSERT_ARE_NOT_EQUAL(int, 0, result);
@@ -395,11 +396,12 @@ TEST_FUNCTION(umocktypes_register_alias_when_module_is_not_initialized_fails)
 TEST_FUNCTION(umocktypes_stringify_when_the_module_is_not_initialized_fails)
 {
     // arrange
+	char* result;
     umocktypename_normalize_call_result = "char*";
     test_stringify_func_testtype_call_result = "blahblah";
 
     // act
-    char* result = umocktypes_stringify("char  *", test_value_1);
+    result = umocktypes_stringify("char  *", test_value_1);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -411,11 +413,12 @@ TEST_FUNCTION(umocktypes_stringify_when_the_module_is_not_initialized_fails)
 TEST_FUNCTION(umocktypes_are_equal_when_the_module_is_not_initialized_fails)
 {
     // arrange
+	int result;
     umocktypename_normalize_call_result = "char*";
     test_are_equal_func_testtype_call_result = 0;
 
     // act
-    int result = umocktypes_are_equal("char *", test_value_1, test_value_2);
+    result = umocktypes_are_equal("char *", test_value_1, test_value_2);
 
     // assert
     ASSERT_ARE_EQUAL(int, -1, result);
@@ -429,13 +432,14 @@ TEST_FUNCTION(umocktypes_are_equal_when_the_module_is_not_initialized_fails)
 TEST_FUNCTION(when_the_module_is_not_initialized_then_umocktypes_copy_fails)
 {
     // arrange
+	int result;
     void* destination = (void*)0x4245;
 
     umocktypename_normalize_call_result = NULL;
     test_copy_func_testtype_call_result = 0;
 
     // act
-    int result = umocktypes_copy("const char *", destination, test_value_1);
+    result = umocktypes_copy("const char *", destination, test_value_1);
 
     // assert
     ASSERT_ARE_NOT_EQUAL(int, 0, result);

@@ -283,10 +283,11 @@ TEST_FUNCTION(umock_c_negative_tests_init_succeeds)
 TEST_FUNCTION(umock_c_negative_tests_init_after_init_fails)
 {
     // arrange
+	int result;
     (void)umock_c_negative_tests_init();
 
     // act
-    int result = umock_c_negative_tests_init();
+    result = umock_c_negative_tests_init();
 
     // assert
     ASSERT_ARE_NOT_EQUAL(int, 0, result);
@@ -587,12 +588,13 @@ TEST_FUNCTION(umock_c_negative_tests_fail_call_when_not_initialized_does_nothing
 TEST_FUNCTION(umock_c_negative_tests_call_count_gets_the_expected_call_count_from_the_current_recorder)
 {
     // arrange
+	size_t result;
     (void)umock_c_negative_tests_init();
     umock_c_negative_tests_snapshot();
     reset_all_calls();
 
     // act
-    size_t result = umock_c_negative_tests_call_count();
+    result = umock_c_negative_tests_call_count();
 
     // assert
     ASSERT_ARE_EQUAL(size_t, 42, result);
@@ -605,11 +607,12 @@ TEST_FUNCTION(umock_c_negative_tests_call_count_gets_the_expected_call_count_fro
 TEST_FUNCTION(umock_c_negative_tests_call_count_when_no_snapshot_was_done_indicates_an_error)
 {
     // arrange
+	size_t result;
     (void)umock_c_negative_tests_init();
     reset_all_calls();
 
     // act
-    size_t result = umock_c_negative_tests_call_count();
+    result = umock_c_negative_tests_call_count();
 
     // assert
     ASSERT_ARE_EQUAL(size_t, 0, result);
@@ -622,6 +625,7 @@ TEST_FUNCTION(umock_c_negative_tests_call_count_when_no_snapshot_was_done_indica
 TEST_FUNCTION(when_umockcallrecorder_get_expected_call_count_fails_umock_c_negative_tests_call_count_indicates_an_error)
 {
     // arrange
+	size_t result;
     (void)umock_c_negative_tests_init();
     umock_c_negative_tests_snapshot();
     reset_all_calls();
@@ -629,7 +633,7 @@ TEST_FUNCTION(when_umockcallrecorder_get_expected_call_count_fails_umock_c_negat
     umockcallrecorder_get_expected_call_count_call_result = __LINE__;
 
     // act
-    size_t result = umock_c_negative_tests_call_count();
+    result = umock_c_negative_tests_call_count();
 
     // assert
     ASSERT_ARE_EQUAL(size_t, 0, result);

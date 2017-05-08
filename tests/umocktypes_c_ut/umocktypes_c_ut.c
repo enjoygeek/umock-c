@@ -266,10 +266,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_char_fails)
 {
     // arrange
     char input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_char(&input);
+    result = umocktypes_stringify_char(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -442,10 +443,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_unsignedchar_fai
 {
     // arrange
     unsigned char input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_unsignedchar(&input);
+    result = umocktypes_stringify_unsignedchar(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -634,10 +636,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_short_fails)
 {
     // arrange
     short input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_short(&input);
+    result = umocktypes_stringify_short(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -810,10 +813,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_unsignedshort_fa
 {
     // arrange
     unsigned short input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_unsignedshort(&input);
+    result = umocktypes_stringify_unsignedshort(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1002,10 +1006,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_int_fails)
 {
     // arrange
     int input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_int(&input);
+    result = umocktypes_stringify_int(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1178,10 +1183,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_unsignedint_fail
 {
     // arrange
     unsigned int input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_unsignedint(&input);
+    result = umocktypes_stringify_unsignedint(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1370,10 +1376,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_long_fails)
 {
     // arrange
     long input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_long(&input);
+    result = umocktypes_stringify_long(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1546,10 +1553,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_unsignedlong_fai
 {
     // arrange
     unsigned long input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_unsignedlong(&input);
+    result = umocktypes_stringify_unsignedlong(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1738,10 +1746,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_longlong_fails)
 {
     // arrange
     long long input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_longlong(&input);
+    result = umocktypes_stringify_longlong(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -1914,10 +1923,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_unsignedlonglong
 {
     // arrange
     unsigned long long input = 127;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_unsignedlonglong(&input);
+    result = umocktypes_stringify_unsignedlonglong(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -2112,10 +2122,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_float_fails)
 {
     // arrange
     float input = 0.42f;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_float(&input);
+    result = umocktypes_stringify_float(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -2310,10 +2321,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_double_fails)
 {
     // arrange
     double input = 0.42;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_double(&input);
+    result = umocktypes_stringify_double(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -2508,10 +2520,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_longdouble_fails
 {
     // arrange
     long double input = 0.42;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_longdouble(&input);
+    result = umocktypes_stringify_longdouble(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -2688,10 +2701,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_size_t_fails)
 {
     // arrange
     size_t input = 42;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_size_t(&input);
+    result = umocktypes_stringify_size_t(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -2868,10 +2882,11 @@ TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_void_ptr_fails)
 {
     // arrange
     void* input = (void*)0x4242;
+	char* result;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_void_ptr(&input);
+    result = umocktypes_stringify_void_ptr(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -3001,11 +3016,12 @@ TEST_FUNCTION(umocktypes_c_register_types_registers_all_types)
 {
     // arrange
     size_t i;
+	int result;
 
     umocktypes_register_type_fail_call_result = 0;
 
     // act
-    int result = umocktypes_c_register_types();
+    result = umocktypes_c_register_types();
 
     // assert
     ASSERT_ARE_EQUAL(int, 0, result);
@@ -3044,12 +3060,13 @@ TEST_FUNCTION(when_the_underlying_register_fails_umocktypes_c_register_types_fai
     for (i = 0; i < 14; i++)
     {
         // arrange
+		int result;
         reset_umocktypes_register_type_calls();
         umocktypes_register_type_fail_call_result = 1;
         when_shall_umocktypes_register_typecall_fail = i + 1;
 
         // act
-        int result = umocktypes_c_register_types();
+        result = umocktypes_c_register_types();
 
         // assert
         ASSERT_ARE_NOT_EQUAL(int, 0, result);

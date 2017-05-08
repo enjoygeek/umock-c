@@ -9,6 +9,12 @@
 #include "umockalloc.h"
 #include "umock_log.h"
 
+#ifdef _MSC_VER
+#if _MSC_VER <= 1500
+#define snprintf _snprintf
+#endif
+#endif
+
 #define IMPLEMENT_STRINGIFY(type, function_postfix, printf_specifier) \
     char* C2(umocktypes_stringify_,function_postfix)(type* value) \
     { \

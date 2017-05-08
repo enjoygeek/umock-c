@@ -32,6 +32,7 @@ elseif(UNIX) # LINUX OR APPLE
 endif()
 
 include (CTest)
+include (CheckIncludeFiles)
 
 # Add dependencies or submodules if use_installed_dependencies is OFF
 include(dependencies.cmake)
@@ -89,6 +90,13 @@ set_target_properties(umock_c
 set(UMOCK_C_INC_FOLDER ${CMAKE_CURRENT_LIST_DIR}/inc CACHE INTERNAL "this is what needs to be included if using umock_c lib" FORCE)
 
 include_directories(${UMOCK_C_INC_FOLDER} ${SHARED_UTIL_INC_FOLDER})
+
+CHECK_INCLUDE_FILES(stdint.h HAVE_STDINT_H)
+CHECK_INCLUDE_FILES(stdbool.h HAVE_STDBOOL_H)
+
+if (NOT (${HAVE_STDINT_H} OR ${HAVE_STDBOOL_H}))
+    include_directories(${UMOCK_C_INC_FOLDER}/aux_inc)
+endif()
 
 include("configs/umock_cFunctions.cmake")
 

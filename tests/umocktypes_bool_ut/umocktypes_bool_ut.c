@@ -245,11 +245,12 @@ TEST_FUNCTION(umocktypes_stringify_bool_with_NULL_fails)
 TEST_FUNCTION(when_allocating_memory_fails_umocktypes_stringify_bool_fails)
 {
     // arrange
+	char* result;
     bool input = false;
     when_shall_malloc_fail = 1;
 
     // act
-    char* result = umocktypes_stringify_bool(&input);
+    result = umocktypes_stringify_bool(&input);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -379,11 +380,12 @@ TEST_FUNCTION(umocktypes_bool_register_types_registers_all_types)
 {
     // arrange
     size_t i;
+	int result;
 
     umocktypes_register_type_fail_call_result = 0;
 
     // act
-    int result = umocktypes_bool_register_types();
+    result = umocktypes_bool_register_types();
 
     // assert
     ASSERT_ARE_EQUAL(int, 0, result);
@@ -408,12 +410,13 @@ TEST_FUNCTION(when_the_underlying_register_fails_umocktypes_bool_register_types_
     for (i = 0; i < 2; i++)
     {
         // arrange
+		int result;
         reset_umocktypes_register_type_calls();
         umocktypes_register_type_fail_call_result = 1;
         when_shall_umocktypes_register_typecall_fail = i + 1;
 
         // act
-        int result = umocktypes_bool_register_types();
+        result = umocktypes_bool_register_types();
 
         // assert
         ASSERT_ARE_NOT_EQUAL(int, 0, result);

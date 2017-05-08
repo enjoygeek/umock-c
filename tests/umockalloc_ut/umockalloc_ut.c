@@ -151,10 +151,11 @@ TEST_FUNCTION_CLEANUP(test_function_cleanup)
 TEST_FUNCTION(umockalloc_malloc_calls_malloc)
 {
     // arrange
+	void* result;
     test_malloc_expected_result = (void*)0x4242;
 
     // act
-    void* result = umockalloc_malloc(42);
+    result = umockalloc_malloc(42);
 
     // assert
     ASSERT_ARE_EQUAL(void_ptr, (void*)0x4242, result);
@@ -167,10 +168,11 @@ TEST_FUNCTION(umockalloc_malloc_calls_malloc)
 TEST_FUNCTION(umockalloc_malloc_calls_malloc_other_value)
 {
     // arrange
+	void* result;
     test_malloc_expected_result = (void*)0x5252;
 
     // act
-    void* result = umockalloc_malloc(43);
+    result = umockalloc_malloc(43);
 
     // assert
     ASSERT_ARE_EQUAL(void_ptr, (void*)0x5252, result);
@@ -182,10 +184,11 @@ TEST_FUNCTION(umockalloc_malloc_calls_malloc_other_value)
 TEST_FUNCTION(when_malloc_returns_NULL_umockalloc_malloc_returns_NULL)
 {
     // arrange
+	void* result;
     test_malloc_expected_result = NULL;
 
     // act
-    void* result = umockalloc_malloc(43);
+    result = umockalloc_malloc(43);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -200,10 +203,11 @@ TEST_FUNCTION(when_malloc_returns_NULL_umockalloc_malloc_returns_NULL)
 TEST_FUNCTION(umockalloc_realloc_calls_realloc)
 {
     // arrange
+	void* result;
     test_realloc_expected_result = (void*)0x4242;
 
     // act
-    void* result = umockalloc_realloc((void*)0x2222, 42);
+    result = umockalloc_realloc((void*)0x2222, 42);
 
     // assert
     ASSERT_ARE_EQUAL(void_ptr, (void*)0x4242, result);
@@ -217,10 +221,11 @@ TEST_FUNCTION(umockalloc_realloc_calls_realloc)
 TEST_FUNCTION(umockalloc_realloc_calls_realloc_other_value)
 {
     // arrange
+	void* result;
     test_realloc_expected_result = (void*)0x5252;
 
     // act
-    void* result = umockalloc_realloc((void*)0x3232, 43);
+    result = umockalloc_realloc((void*)0x3232, 43);
 
     // assert
     ASSERT_ARE_EQUAL(void_ptr, (void*)0x5252, result);
@@ -234,10 +239,11 @@ TEST_FUNCTION(umockalloc_realloc_calls_realloc_other_value)
 TEST_FUNCTION(when_realloc_returns_NULL_umockalloc_realloc_returns_NULL)
 {
     // arrange
+	void* result;
     test_realloc_expected_result = NULL;
 
     // act
-    void* result = umockalloc_realloc((void*)0x3232, 43);
+    result = umockalloc_realloc((void*)0x3232, 43);
 
     // assert
     ASSERT_IS_NULL(result);
@@ -251,10 +257,11 @@ TEST_FUNCTION(when_realloc_returns_NULL_umockalloc_realloc_returns_NULL)
 TEST_FUNCTION(umockalloc_realloc_with_NULL_and_0_size_calls_the_underlying_realloc)
 {
     // arrange
+	void* result;
     test_realloc_expected_result = (void*)0x4242;
 
     // act
-    void* result = umockalloc_realloc(NULL, 0);
+    result = umockalloc_realloc(NULL, 0);
 
     // assert
     ASSERT_ARE_EQUAL(void_ptr, (void*)0x4242, result);
