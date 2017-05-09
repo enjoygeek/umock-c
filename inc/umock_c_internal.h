@@ -999,6 +999,7 @@ typedef struct MOCK_CALL_METADATA_TAG
         int is_error = 0; \
         size_t args_string_length = 0; \
         IF(COUNT_ARG(__VA_ARGS__), FOR_EACH_2_COUNTED(STRINGIFY_ARGS_DECLARE_RESULT_VAR, __VA_ARGS__) \
+        IF(COUNT_ARG(__VA_ARGS__),,(void)mock_call_data;) \
         FOR_EACH_2(STRINGIFY_ARGS_CHECK_ARG_STRINGIFY_SUCCESS, __VA_ARGS__), ) \
         (void)mock_call_data; \
         if (is_error != 0) \
