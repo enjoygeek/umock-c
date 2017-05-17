@@ -1219,7 +1219,8 @@ typedef struct MOCK_CALL_METADATA_TAG
                 UMOCK_LOG("Could not track the destroy call for %s.", TOSTRING(name)); \
                 umock_c_indicate_error(UMOCK_C_ERROR); \
             } \
-        },)
+        },) \
+		{
 
 /* Codes_SRS_UMOCK_C_LIB_01_188: [ The create call shall have a non-void return type. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_191: [ At each create_call a memory block shall be allocated so that it can be reported as a leak by any memory checker. ]*/
@@ -1228,24 +1229,25 @@ typedef struct MOCK_CALL_METADATA_TAG
 #define MOCKABLE_FUNCTION_UMOCK_INTERNAL_WITH_MOCK(modifiers, return_type, name, ...) \
     MOCKABLE_FUNCTION_UMOCK_INTERNAL_WITH_MOCK_NO_CODE(return_type, name, __VA_ARGS__) \
     MOCKABLE_FUNCTION_BODY_WITHOUT_RETURN(modifiers, return_type, name, __VA_ARGS__) \
-        IF(IS_NOT_VOID(return_type), \
-        if (result_value_set == 0) \
-        { \
-            COPY_RETURN_VALUE(return_type, name) \
-        }; \
-        if (captured_return_value != NULL) \
-        { \
-            (void)memcpy(captured_return_value, &result, sizeof(result)); \
-        } \
-        IF(IS_NOT_VOID(return_type),if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
-        { \
-            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
-            { \
-                UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
-                umock_c_indicate_error(UMOCK_C_ERROR); \
-            } \
-        },) \
-        return result;,) \
+			IF(IS_NOT_VOID(return_type), \
+			if (result_value_set == 0) \
+			{ \
+				COPY_RETURN_VALUE(return_type, name) \
+			}; \
+			if (captured_return_value != NULL) \
+			{ \
+				(void)memcpy(captured_return_value, &result, sizeof(result)); \
+			} \
+			IF(IS_NOT_VOID(return_type),if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
+			{ \
+				if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
+				{ \
+					UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
+					umock_c_indicate_error(UMOCK_C_ERROR); \
+				} \
+			},) \
+			return result;,) \
+		} \
 	} \
 
 /* Codes_SRS_UMOCK_C_LIB_01_150: [ MOCK_FUNCTION_WITH_CODE shall define a mock function and allow the user to embed code between this define and a MOCK_FUNCTION_END call. ]*/
@@ -1258,23 +1260,24 @@ typedef struct MOCK_CALL_METADATA_TAG
 /* Codes_SRS_UMOCK_C_LIB_01_192: [ If any error occurs during the create_call related then umock_c shall raise an error with the code UMOCK_C_ERROR. ]*/
 /* Codes_SRS_UMOCK_C_LIB_01_204: [ Tracking of paired calls shall not be done if the actual call to the `create_call` is using the `SetFailReturn` call modifier. ]*/
 #define MOCK_FUNCTION_END(...) \
-        IF(COUNT_ARG(__VA_ARGS__), if (result_value_set == 0) \
-        { \
-            result = __VA_ARGS__; \
-        }; \
-        if (captured_return_value != NULL) \
-        { \
-            (void)memcpy(captured_return_value, &result, sizeof(result)); \
-        } \
-        if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
-        { \
-            if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
-            { \
-                UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
-                umock_c_indicate_error(UMOCK_C_ERROR); \
-            } \
-        } \
-        return result;,) \
+			IF(COUNT_ARG(__VA_ARGS__), if (result_value_set == 0) \
+			{ \
+				result = __VA_ARGS__; \
+			}; \
+			if (captured_return_value != NULL) \
+			{ \
+				(void)memcpy(captured_return_value, &result, sizeof(result)); \
+			} \
+			if ((track_create_destroy_pair_malloc_local != NULL) && (fail_result_value_set == 0)) \
+			{ \
+				if (track_create_destroy_pair_malloc_local(used_paired_handles_local, (const void*)&result, return_type_string, sizeof(result)) != 0) \
+				{ \
+					UMOCK_LOG("Could not track the create call for %s.", TOSTRING(name)); \
+					umock_c_indicate_error(UMOCK_C_ERROR); \
+				} \
+			} \
+			return result;,) \
+		} \
     }
 
 /* Codes_SRS_UMOCK_C_LIB_01_187: [ REGISTER_UMOCKC_PAIRED_CREATE_DESTROY_CALLS shall register with umock two calls that are expected to be paired. ]*/
