@@ -10,9 +10,7 @@
 #include "umock_log.h"
 
 #ifdef _MSC_VER
-#if _MSC_VER <= 1500
 #define snprintf _snprintf
-#endif
 #endif
 
 #define IMPLEMENT_STRINGIFY(type, function_postfix, printf_specifier) \

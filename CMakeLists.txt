@@ -10,7 +10,7 @@ endif()
 option(run_unittests "set run_unittests to ON to run unittests (default is OFF)" OFF)
 option(run_int_tests "set run_int_tests to ON to run the integration tests (default is OFF)" OFF)
 option(use_installed_dependencies "set use_installed_dependencies to ON to use installed packages instead of building dependencies from submodules" OFF)
-option(use_cppunittest "set use_cppunittest to ON to build CppUnitTest tests on Windows (default is ON)" ON)
+option(use_cppunittest "set use_cppunittest to ON to build CppUnitTest tests on Windows (default is ON)" OFF)
 
 project(umock_c)
 
@@ -77,6 +77,8 @@ set(umock_c_h_files
 IF(WIN32)
     #windows needs this define
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    # Make warning as error
+    add_definitions(/WX)
 ENDIF()
 
 add_library(umock_c ${umock_c_c_files} ${umock_c_h_files})

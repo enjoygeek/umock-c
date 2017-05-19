@@ -39,15 +39,15 @@ cd %build-root%\cmake
 
 if %build-platform% == Win32 (
 	echo ***Running CMAKE for Win32***
-	cmake %build-root% -Drun_unittests:bool=ON -Drun_int_tests:bool=ON
+	cmake %build-root% -Drun_unittests:bool=ON -Drun_int_tests:bool=ON -Duse_cppunittest:bool=ON
 	if errorlevel 1 goto :eof
 ) else if %build-platform% == ARM (
 	echo ***Running CMAKE for ARM***
-	cmake %build-root% -G "Visual Studio 14 ARM" -Drun_unittests:bool=ON -Drun_int_tests:bool=ON
+	cmake %build-root% -G "Visual Studio 14 ARM" -Drun_unittests:bool=ON -Drun_int_tests:bool=ON -Duse_cppunittest:bool=ON
 	if errorlevel 1 goto :eof
 ) else (
 	echo ***Running CMAKE for Win64***
-	cmake %build-root% -G "Visual Studio 14 Win64" -Drun_unittests:bool=ON -Drun_int_tests:bool=ON
+	cmake %build-root% -G "Visual Studio 14 Win64" -Drun_unittests:bool=ON -Drun_int_tests:bool=ON -Duse_cppunittest:bool=ON
 	if errorlevel 1 goto :eof
 )
 
